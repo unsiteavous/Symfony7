@@ -94,3 +94,5 @@ C'est tellement puissant que c'en est déconcertant, n'est-ce pas ? 😉
 Attention, il y a toujours des petites améliorations à apporter, ce n'est pas parce que le code est généralisé qu'il est parfait du premier coup.
 
 
+## Activité
+Aller à [l'activité 6](<14 Activité 6.md>).

@@ -9,3 +9,5 @@ Finalement on pourra même interroger la pertinence de choisir les films associ�
 Modifiez la méthode de suppression, pour passer sur un DELETE (et pas un POST)
 
 Ajoutez les contraintes dans votre entité.
+
+Continuer avec le [cours 9](<15 cours 9.md>).

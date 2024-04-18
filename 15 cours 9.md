@@ -178,3 +178,6 @@ use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
   ```
 
 On ne peut pas utiliser l'injection de dépendance sur des entités. Pour réussir à construire l'entité avec les données reçues, on doit utiliser `MapRequestPayload`, qui va récupérer les données, les serializer, les valider, vérifier qu'elles font bien partie du groupe de champs qu'on peut modifier, et enfin, créer l'objet souhaité. 
+
+## Activité
+Aller à [l'activité 7](<16 Activité 7.md>).

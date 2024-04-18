@@ -15,3 +15,5 @@ Faites tous les CRUDS pour les films et les classifications.
 10. Venir ajouter les contraintes dans les entités pour les validations de données.
 11. Ajoutez un `empty_data` dans le FilmType, pour les champs qui ne peuvent pas être nul.
 12. BONUS : créez votre propre contrainte de validation
+
+Continuer avec le [cours 8](<13 cours 8.md>).

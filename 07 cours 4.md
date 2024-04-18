@@ -55,3 +55,6 @@ public function tri(FilmRepository $filmRepository, $duree)
   ]);
 }
 ```
+
+## Activité
+[C'est par ici !](<08 Activité 4.md>)

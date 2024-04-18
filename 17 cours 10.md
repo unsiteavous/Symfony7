@@ -107,3 +107,7 @@ ou encore
 {% endif %}
 ```
 [📜 Une autre explication des différences des autorisation.](https://symfonycasts.com/screencast/symfony2-ep2/twig-security-is-authenticated)
+
+
+## Activité
+Aller à [l'activité 8](<18 Activité 8.md>).

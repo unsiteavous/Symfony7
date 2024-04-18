@@ -188,3 +188,5 @@ class Film
     private ?string $titre = null;
 ```
 
+## Activité
+Aller à [l'activité 5](<12 Activité 5.md>).

@@ -26,3 +26,4 @@ Pour cela, je vous laisse lire la documentation de symfony :
 Pensez à créer la vue `show.html.twig` dans vos templates. 
 Elle permettra de voir tous les éléments du film mis en forme.
 
+Continuer avec la [cours 4](<07 cours 4.md>).

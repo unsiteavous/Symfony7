@@ -184,3 +184,5 @@ Quand on appelle l'entity Manager, comme son nom l'indique, il gère les entité
 $em = new EntityManagerInterface;
 $film = $em->getRepository(Film::class)->find('id');
 ```
+
+Continuer avec le [cours 6](<10 cours 6.md>).

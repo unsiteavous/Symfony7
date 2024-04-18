@@ -167,3 +167,5 @@ public function update(Film $film, Request $request, EntityManagerInterface $em)
 ```
 
 En plus des avantages de l'asynchrone, on peut venir travailler à plusieurs endroits en même temps grâce à Turbo : En effet, si vous avez envie de changer trois ou quatre sections de votre page suite à une action utilisateur, il suffit de mettre plusieurs `turbo-frame` dans votre template de base, et dans le fichier qui sera appelé par le controller, vous pouvez ensuite mettre autant de sections `turbo-stream` que nécessaire. Elles seront toutes chargées et modifiées en même temps s'il y en a plusieurs ! 
+
+Continuer avec le [cours 7](<11 cours 7.md>).

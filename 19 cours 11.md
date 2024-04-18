@@ -238,3 +238,8 @@ $film->setTitre($this->faker->unique()->sentence());
 ```
 
 [📜 Documentation de Faker](https://fakerphp.github.io/)
+
+
+
+## Activité
+Aller à [l'activité 9](<20 Activité 9.md>).

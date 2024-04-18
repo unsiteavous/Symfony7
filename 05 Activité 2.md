@@ -9,3 +9,6 @@
 ## Partie 2
 
 Faites les migrations.
+
+
+Continuer avec [l'activité 3](<06 Activité 3.md>).

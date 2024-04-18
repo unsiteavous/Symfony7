@@ -96,3 +96,7 @@ S'il y a plusieurs fichiers de migration, Doctrine les lit toujours dans l'ordre
 
 Si on va voir en base de données, on se rend compte que doctrine a créé toute seule les tables, mais aussi les tables intermédiaires, les clefs etrangères, ... Pas mal non ?
 
+
+## Activités 2 & 3
+* [Activité 2](<05 Activité 2.md>)
+* [Activité 3](<06 Activité 3.md>)
