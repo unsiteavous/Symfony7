@@ -10,5 +10,6 @@
 
 Faites les migrations.
 
+Enfin, rentrons à la main au moins deux catégories, deux classifications et trois films.
 
-Continuer avec [l'activité 3](<06 Activité 3.md>).
+Continuer avec la suite du [cours 3](<04 cours 3.md>).

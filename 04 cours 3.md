@@ -97,6 +97,75 @@ S'il y a plusieurs fichiers de migration, Doctrine les lit toujours dans l'ordre
 Si on va voir en base de données, on se rend compte que doctrine a créé toute seule les tables, mais aussi les tables intermédiaires, les clefs etrangères, ... Pas mal non ?
 
 
-## Activités 2 & 3
+## Activités 2
 * [Activité 2](<05 Activité 2.md>)
+
+## Chercher des choses dans la base de données 
+Pour récupérer des éléments en BDD, on va avoir besoin des repositories. Or, on s'aperçoit qu'ils sont vides... 
+
+Sauf qu'en fait non : ils étendent le `ServiceEntityRepository`, qui lui-même utilise `EntityRepository`, et ce dernier à toute une liste de fonction pour nous :
+
+* `find($id)`
+* `findAll()`
+* `findBy()`
+* ...
+
+Trop bien ! 
+
+Donc, pour afficher toutes nos catégories par exemple, on pourra faire ça dans notre CategorieController :
+
+```php
+#[Route('/categories', name: "app_categorie_index", methods: ['GET'])]
+public function index(CategorieRepository $categorieRepository)
+{
+  $categories = $categorieRepository->findAll();
+  return $this->render('categorie/index.html.twig', [
+    'categories' => $categories
+  ]);
+}
+```
+On remarque un truc hyper important à saisir, pour la suite de l'utilisation de symfony : **L'injection de dépendances**.
+
+L'injection de dépendance, c'est demander, entre les parenthèses d'une méthode, de nous envoyer un objet, dont on a besoin ensuite. Ici, c'est le CategorieRepository. Vous voyez qu'on a pas mis de `=` ou de `new`. Et pourtant, parce qu'on l'a demandé dans les parenthèses de notre méthode `index`, il nous a été livré par symfony et on peut s'en servir.
+
+### Récupérer une catégorie depuis l'url
+Lorsqu'on veut récupérer une catégorie depuis l'url, on peut le faire ainsi :
+
+```php
+#[Route('/categorie/{id}', name: "app_categorie_show", methods: ['GET'])]
+public function index($id, CategorieRepository $categorieRepository)
+{
+  $categorie = $categorieRepository->find($id);
+  return $this->render('categorie/index.html.twig', [
+    'categorie' => $categorie
+  ]);
+}
+```
+Cette fois-ci on voit que l'on récupère l'id hyper facilement, que symfony a compris que l'id qu'on attend dans la méthode, c'est celui qu'on cherche dans la route.
+
+Symfony est même encore plus intelligent que ça : on peut directement lui demander l'objet à instancier avec cet ID, sans le faire nous-même ensuite :
+
+```php
+#[Route('/categorie/{id}', name: "app_categorie_show", methods: ['GET'])]
+public function index(Categorie $categorie)
+{
+  return $this->render('categorie/index.html.twig', [
+    'categorie' => $categorie
+  ]);
+}
+```
+Ici, on constate que nous lui demandons directement une catégorie instanciée, et qu'il est capable tout seul de nous instancier la catégorie qui a cet ID-là. Trop fort ! 
+On pourrait aussi l'instancier avec son nom, ou une autre propriété de l'entité, du moment qu'on est sûr de pouvoir n'en trouver qu'un, c'est-à-dire qu'il est unique en BDD :
+
+```php
+#[Route('/categorie/{nom}', name: "app_categorie_show", methods: ['GET'])]
+public function index(Categorie $categorie)
+{
+  return $this->render('categorie/index.html.twig', [
+    'categorie' => $categorie
+  ]);
+}
+```
+## Activité
+
 * [Activité 3](<06 Activité 3.md>)

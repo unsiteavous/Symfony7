@@ -1,5 +1,4 @@
 # Activité 3 : Travailler avec la BDD
-Pour commencer, rentrons à la main au moins une catégorie, une classification et un film.
 
 Nous allons construire ensuite un nouveau controller `FilmController`, rappelez-vous de la ligne de commande pour ça. Ensuite, modifiez la première route pour qu'elle soit appelée à l'URL `films`. 
 

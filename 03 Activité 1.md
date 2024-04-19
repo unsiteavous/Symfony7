@@ -59,14 +59,14 @@ Dans le fichier twig en question, copiez-collez ce code :
   Afficher le slogan, avec les balises HTML éxecutées. Il faut savoir le faire, même s'il faut être très attentif à la sécurité, si c'est du code qui vient de l'utilisateur.
 
 
-
-  Faites un bouton pour revenir sur la page home, avec url, puis un second avec path.
+  Dans le fichier header.html.twig, vous allez créer deux boutons :
+  Faites un bouton pour revenir sur la page home, avec url, puis un second avec path, pour aller sur la page twig.
   Path est souvent utilisé pour les routes internes, et url pour les routes externes.
 
   
 
-  Mettez ces deux liens dans une condition, qui écoute la route actuelle : Si la route est home, on n'affiche rien, sinon on les affiche.
-  On mettra ensuite tout ça dans le fichier header.html.twig.
+  Mettez ces deux liens dans une condition, qui écoute la route actuelle : Si la route est home, on affiche twig, et vice versa.
+  
   
 
   
