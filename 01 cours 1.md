@@ -47,7 +47,7 @@ symfony console
 notre première commande nous permettra de voir le rendu web de notre application. Symfony a un émulateur de serveur interne. Pas besoin de wamp dans un premier temps. (*Nous aurons tout de même besoin de wamp pour faire tourner mysql notamment, et pour simuler une mise en prod*).
 
 ```
-symfony console server:start -d
+symfony server:start -d
 ```
 
 le drapeau `-d` permet de faire tourner le serveur en arrière-plan, pour vous permettre de continuer à pouvoir utiliser votre ligne de commande.
