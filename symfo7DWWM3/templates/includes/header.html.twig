@@ -1,0 +1,12 @@
+<header class="d-flex justify-content-between m-3 align-items-center">
+	<div class="fs-1">
+		LOGO.
+	</div>
+	<div> 
+		{% if app.request.pathInfo == path('app_twig') %}
+			<a href=" {{ url('app_home') }}">Home</a>
+		{% else %}
+			<a href=" {{ path('app_twig') }}">Twig</a>
+		{% endif %}
+	</div>
+</header>

@@ -1,0 +1,38 @@
+{% extends 'base.html.twig' %}
+
+{% block title 'Activité twig' %}
+
+{% block body %}
+
+	{{ dump(user) }}
+
+	{% set nomComplet = user.prenom ~ " " ~ user.nom %}
+
+	<h1>Bonjour
+		{{ nomComplet }}</h1>
+	<h1>Bonjour
+		{{ user.prenom ~ ' ' ~ user.nom }}</h1>
+
+	{% if user.activated %}
+		<p>✅ Compte activé</p>
+	{% endif %}
+
+	<p>Date de création :
+		{{ user.createdAt | date('d m Y') }}
+	</p>
+	<p>Date de création :
+		{{ user.createdAt|format_datetime('full', 'none', locale='fr_FR') }}
+	</p>
+
+	{% for clef, valeur in user %}
+		{% if clef == "createdAt" %}
+			<p>
+				<b>{{clef}} :</b> {{valeur|format_datetime('full', 'none', locale='fr_FR')}}</p>
+		{% elseif clef == "slogan" %}
+			<p> <b>{{clef}} :</b> {{valeur|raw}}</p>
+		{% else %}
+			<p> <b>{{clef}} :</b> {{valeur}}</p>
+		{% endif %}
+	{% endfor %}
+
+{% endblock %}
