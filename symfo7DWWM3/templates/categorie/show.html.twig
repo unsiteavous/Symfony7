@@ -1,0 +1,19 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+	{{ categorie.nom }}
+{% endblock %}
+
+{% block body %}
+
+	<h1>{{ categorie.nom }}</h1>
+	<h3>Description :</h3>
+	<p>{{ categorie.description }}</p>
+
+  <h3>Films associés à cette catégorie :</h3>
+	<ul>
+		{% for film in films %}
+			<li><a href="{{ path('app_film_show', {id: film.id}) }}">{{ film.nom }}</a></li>
+		{% endfor %}
+	</ul>
+{% endblock %}

@@ -7,6 +7,10 @@
 {% block body %}
 
   <h1>{{ film.nom }}</h1>
-
+  <p>Catégories : 
+    {% for categorie in film.categories %}
+      <a href=" {{ path('app_categorie_show', {nom: categorie.nom}) }} ">{{ categorie.nom }}</a>
+    {% endfor %}
+  </p>
   {{ dump(film) }}
-{% endblock %}
+{% endblock %}symfony

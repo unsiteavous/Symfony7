@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Liste des classifications
+{% endblock %}
+
+{% block body %}
+	<h1>Liste des classifications</h1>
+	<ul>
+		{% for classification in classifications %}
+            <li><a href=" {{ path('app_classification_show', {intitule: classification.intitule }) }} "> {{ classification.intitule }} </a></li>
+        {% endfor %}
+	</ul>
+{% endblock %}
