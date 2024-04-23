@@ -3,10 +3,10 @@
 		LOGO.
 	</div>
 	<div> 
-		{% if app.request.pathInfo == path('app_twig') %}
-			<a href=" {{ url('app_home') }}">Home</a>
+		{% if app.request.pathInfo != path('app_film_index') %}
+			<a href=" {{ path('app_film_index') }}">Revenir à la liste des films</a>
 		{% else %}
-			<a href=" {{ path('app_twig') }}">Twig</a>
+			
 		{% endif %}
 	</div>
 </header>

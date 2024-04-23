@@ -20,8 +20,10 @@
 	</head>
 	<body>
 		{% include 'includes/header.html.twig' %}
-		{% block body %}
-			Je suis le bloc parent.
-		{% endblock %}
+		<div class="container">
+			{% block body %}
+				Je suis le bloc parent.
+			{% endblock %}
+		</div>
 	</body>
 </html>

@@ -1,0 +1,15 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Liste des films
+{% endblock %}
+
+{% block body %}
+	{{ dump(films) }}
+    <ul>
+    {% for film in films %}
+        <li><a href=" {{ path('app_film_show', {id: film.id }) }} ">{{film.nom}}</a></li>
+    {% endfor %}
+    </ul>
+
+    <a href="{{ path('app_film_new') }}">Créer un nouveau film</a>
+{% endblock %}

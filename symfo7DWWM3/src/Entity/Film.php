@@ -35,14 +35,14 @@ class Film
     private ?\DateTimeInterface $dateSortie = null;
 
     /**
-     * @var Collection<int, categorie>
+     * @var Collection<int, Categorie>
      */
-    #[ORM\ManyToMany(targetEntity: categorie::class, inversedBy: 'films')]
+    #[ORM\ManyToMany(targetEntity: Categorie::class, inversedBy: 'films')]
     private Collection $categories;
 
     #[ORM\ManyToOne(inversedBy: 'films')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?classification $classification = null;
+    private ?Classification $classification = null;
 
     public function __construct()
     {
@@ -134,7 +134,7 @@ class Film
         return $this->categories;
     }
 
-    public function addCategory(categorie $category): static
+    public function addCategory(Categorie $category): static
     {
         if (!$this->categories->contains($category)) {
             $this->categories->add($category);
@@ -143,19 +143,19 @@ class Film
         return $this;
     }
 
-    public function removeCategory(categorie $category): static
+    public function removeCategory(Categorie $category): static
     {
         $this->categories->removeElement($category);
 
         return $this;
     }
 
-    public function getClassification(): ?classification
+    public function getClassification(): ?Classification
     {
         return $this->classification;
     }
 
-    public function setClassification(?classification $classification): static
+    public function setClassification(?Classification $classification): static
     {
         $this->classification = $classification;
 
