@@ -25,4 +25,7 @@ Pour cela, je vous laisse lire la documentation de symfony :
 Pensez à créer la vue `show.html.twig` dans vos templates. 
 Elle permettra de voir tous les éléments du film mis en forme.
 
+## Et on répète !
+Faites la même chose avec les catégories et les classifications, ça va finir par rentrer ! 😉
+
 Continuer avec la [cours 4](<07 cours 4.md>).
