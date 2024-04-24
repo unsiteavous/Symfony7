@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Categorie;
+use App\Form\CategorieType;
 use App\Repository\CategorieRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -21,13 +22,22 @@ class CategorieController extends AbstractController
     }
 
     #[Route('/{nom}', name: 'show', methods: ['GET'])]
-    public function show(Categorie $categorie): Response 
+    public function show(Categorie $categorie): Response
     {
         $films = $categorie->getFilms();
 
         return $this->render('categorie/show.html.twig', [
             'categorie' => $categorie,
             'films' => $films
+        ]);
+    }
+
+    #[Route('/new', name: 'new', methods: ['GET'], priority: 1)]
+    public function new(): Response
+    {
+        $form = $this->createForm(CategorieType::class);
+        return $this->render('categorie/new.html.twig', [
+            'form' => $form
         ]);
     }
 }

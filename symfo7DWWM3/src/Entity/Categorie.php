@@ -25,7 +25,7 @@ class Categorie
      * @var Collection<int, Film>
      */
     #[ORM\ManyToMany(targetEntity: Film::class, mappedBy: 'categories')]
-    private Collection $films;
+    private ?Collection $films = null;
 
     public function __construct()
     {

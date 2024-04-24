@@ -1,16 +1,19 @@
 {% extends 'base.html.twig' %}
 
 {% block title film.nom %}
-  
 
 
 {% block body %}
-
-  <h1>{{ film.nom }}</h1>
-  <p>Catégories : 
-    {% for categorie in film.categories %}
-      <a href=" {{ path('app_categorie_show', {nom: categorie.nom}) }} ">{{ categorie.nom }}</a>
-    {% endfor %}
-  </p>
-  {{ dump(film) }}
-{% endblock %}symfony
+	{% for message in app.flashes('success') %}
+		<div class="bg-success">
+			<p>{{ message | join('. <br>') }}</p>
+		</div>
+	{% endfor %}
+	<h1>{{ film.nom }}</h1>
+	<p>Catégories :
+		{% for categorie in film.categories %}
+			<a href=" {{ path('app_categorie_show', {nom: categorie.nom}) }} ">{{ categorie.nom }}</a>
+		{% endfor %}
+	</p>
+	{{ dump(film) }}
+{% endblock %}

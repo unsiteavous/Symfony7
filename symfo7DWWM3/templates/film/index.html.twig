@@ -4,10 +4,20 @@
 {% endblock %}
 
 {% block body %}
-	{{ dump(films) }}
+	
+    {% for message in app.flashes('success') %}
+        <div class="bg-success">
+            {{ message | join('. <br>') }}
+        </div>
+    {% endfor %}
+
     <ul>
     {% for film in films %}
-        <li><a href=" {{ path('app_film_show', {id: film.id }) }} ">{{film.nom}}</a></li>
+        <li>
+        <a href=" {{ path('app_film_show', {nom: film.nom }) }} ">{{film.nom}}</a>
+        <a href=" {{ path('app_film_delete', {id: film.id} ) }} " class="btn btn-danger">Supprimer</a>
+        <a href=" {{ path('app_film_update', {id: film.id} ) }} " class="btn btn-primary">Modifier</a>
+        </li>
     {% endfor %}
     </ul>
 
