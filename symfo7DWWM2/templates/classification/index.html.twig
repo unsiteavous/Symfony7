@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Liste des Classifications
+{% endblock %}
+
+{% block body %}
+
+	<h1>Liste des Classifications</h1>
+
+	{% for message in app.flashes('success') %}
+		<div class="bg-success">
+			{{ message | join('<br>') }}
+		</div>
+	{% endfor %}
+
+	<ul>
+		{% for classification in classifications %}
+			<li>
+				<a href="{{ path('app_classification_show', {intitule: classification.intitule}) }}">{{classification.intitule}}</a>
+				<a href="{{path('app_classification_edit', {id: classification.id})}}" class="btn btn-secondary">Éditer</a>
+				<form action="{{ path('app_classification_delete', {id: classification.id}) }}" method="POST">
+					<input type="hidden" name="_method" value="DELETE">
+					<input type="submit" class="btn btn-danger" value="Supprimer">
+				</form>
+			</li>
+		{% endfor %}
+	</ul>
+
+	<a href="{{ path('app_classification_new')}}" class="btn btn-primary">Créer une nouvelle classification</a>
+{% endblock %}

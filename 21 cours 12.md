@@ -76,6 +76,8 @@ Pour éviter ça, on va copier seulement quelques fichiers dans un nouveau dossi
 * .env.local.php
 * composer.json
 * composer.lock
+* importmap.php
+* symfony.lock
 
 **C'est tout !!!**
 
@@ -88,7 +90,11 @@ Cela télécharge uniquement les dépendances nécessaires à la production (par
 
 Puis il faut nettoyer le cache de Symfony :
 ```bash
-APP_ENV=prod APP_DEBUG=0 php bin/console cache:clear
+symfony console cache:clear
 ```
 
-Et là, ça y est 
+Et là, ça y est tout est prêt. Si vous retournez à présent sur votre virtualHost, vous pouvez voir votre site comme sit vous étiez en ligne.
+
+Et dans notre cas, pour pouvoir mettre notre application sur le serveur de simplon, on utilisera en plus un fichier nginx.conf comme on a l'habitude de le faire.
+
+Bravo vous avez une app symfony mise en ligne ! 👍👏🎉

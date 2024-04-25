@@ -1,0 +1,23 @@
+{% extends 'base.html.twig' %}
+
+{% block title  %}
+  {% if app.request.pathinfo == path('app_film_new') %}
+    Créer une nouvelle film
+  {% else %}
+    Mettre à jour la film "{{film.titre}}"
+  {% endif %}
+{% endblock %}
+
+{% block body %}
+  {% if app.request.pathinfo == path('app_film_new') %}
+    <h1>Créer une nouvelle film</h1>
+
+    {% else %}
+    <h1>Mettre à jour la film "{{film.titre}}"</h1>
+
+  {% endif %}
+  
+    {{ form(form) }}
+
+  
+{% endblock %}

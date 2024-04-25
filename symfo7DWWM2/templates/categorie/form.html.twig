@@ -1,0 +1,23 @@
+{% extends 'base.html.twig' %}
+
+{% block title  %}
+  {% if app.request.pathinfo == path('app_categorie_new') %}
+    Créer une nouvelle catégorie
+  {% else %}
+    Mettre à jour la catégorie "{{categorie.nom}}"
+  {% endif %}
+{% endblock %}
+
+{% block body %}
+  {% if app.request.pathinfo == path('app_categorie_new') %}
+    <h1>Créer une nouvelle catégorie</h1>
+
+    {% else %}
+    <h1>Mettre à jour la catégorie "{{categorie.nom}}"</h1>
+
+  {% endif %}
+  
+    {{ form(form, {method: 'PUT'}) }}
+ 
+  
+{% endblock %}

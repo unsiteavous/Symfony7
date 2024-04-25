@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title film.titre %}
+{% block title %}{{ classification.intitule }}{% endblock %}
 
 {% block body %}
 <style>
@@ -9,8 +9,8 @@
 </style>
 
 <div class="example-wrapper">
-    <h1>{{film.titre}}</h1>
+    <h1>{{ classification.intitule }}</h1>
     {{ include('includes/success.html.twig') }}
-    {{ dump(film) }}
+    <p><b>Description : </b> {{ classification.avertissement }}</p>
 </div>
 {% endblock %}

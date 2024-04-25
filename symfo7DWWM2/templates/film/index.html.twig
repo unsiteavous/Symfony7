@@ -1,19 +1,43 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello FilmController!{% endblock %}
+{% block title %}Hello FilmController!
+{% endblock %}
 
 {% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
+	<style>
+		.example-wrapper {
+			margin: 1em auto;
+			max-width: 800px;
+			width: 95%;
+			font: 18px / 1.5 sans-serif;
+		}
+		.example-wrapper code {
+			background: #F5F5F5;
+			padding: 2px 6px;
+		}
+	</style>
 
-<div class="example-wrapper">
-    {{ dump(films) }}
-    <ul>
-        {% for film in films %}
-            <li><a href=" {{ path('app_film_show' , {'id': film.id} ) }} ">{{ film.titre }}</a></li>
-        {% endfor %}
-    </ul>
-</div>
+	<div class="example-wrapper">
+		<h1>Liste des films</h1>
+
+		{% for message in app.flashes('success') %}
+			<div class="bg-success">
+				{{ message | join('<br>') }}
+			</div>
+		{% endfor %}
+		<ul>
+			{% for film in films %}
+				<li>
+					<a href=" {{ path('app_film_show' , {'titre': film.titre} ) }} ">{{ film.titre }}</a>
+					<a href="{{path('app_film_edit', {titre: film.titre})}}" class="btn btn-secondary">Éditer</a>
+					<form action="{{ path('app_film_delete', {titre: film.titre}) }}" method="POST">
+						<input type="hidden" name="_method" , value="DELETE">
+						<input type="submit" value="Supprimer" class="btn btn-danger">
+					</form>
+				</li>
+			{% endfor %}
+		</ul>
+
+		<a href=" {{ path('app_film_new') }} " class="btn btn-primary">Ajouter un nouveau film</a>
+	</div>
 {% endblock %}

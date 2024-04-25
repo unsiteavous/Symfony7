@@ -1,0 +1,5 @@
+{% for message in app.flashes('success') %}
+		<div class="bg-success">
+			{{ message | join('<br>') }}
+		</div>
+	{% endfor %}

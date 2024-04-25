@@ -1,0 +1,23 @@
+{% extends 'base.html.twig' %}
+
+{% block title  %}
+  {% if app.request.pathinfo == path('app_classification_new') %}
+    Créer une nouvelle classification
+  {% else %}
+    Mettre à jour la classification "{{classification.intitule}}"
+  {% endif %}
+{% endblock %}
+
+{% block body %}
+  {% if app.request.pathinfo == path('app_classification_new') %}
+    <h1>Créer une nouvelle classification</h1>
+
+    {% else %}
+    <h1>Mettre à jour la classification "{{classification.intitule}}"</h1>
+
+  {% endif %}
+  
+    {{ form(form) }}
+
+  
+{% endblock %}
