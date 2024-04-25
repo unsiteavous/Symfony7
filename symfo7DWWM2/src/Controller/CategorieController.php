@@ -67,7 +67,7 @@ class CategorieController extends AbstractController
   public function edit(Categorie $categorie, Request $request, EntityManagerInterface $em) : Response 
   {
     
-    $form = $this->createForm(CategorieType::class, $categorie);
+    $form = $this->createForm(CategorieType::class, $categorie, ['method' => 'PUT']);
 
     $form->handleRequest($request);
 
