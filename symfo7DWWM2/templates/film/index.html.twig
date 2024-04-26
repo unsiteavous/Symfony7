@@ -29,15 +29,20 @@
 			{% for film in films %}
 				<li>
 					<a href=" {{ path('app_film_show' , {'titre': film.titre} ) }} ">{{ film.titre }}</a>
-					<a href="{{path('app_film_edit', {titre: film.titre})}}" class="btn btn-secondary">Éditer</a>
-					<form action="{{ path('app_film_delete', {titre: film.titre}) }}" method="POST">
-						<input type="hidden" name="_method" , value="DELETE">
-						<input type="submit" value="Supprimer" class="btn btn-danger">
-					</form>
+
+					{% if is_granted('ROLE_USER') %}
+						<a href="{{path('app_film_edit', {titre: film.titre})}}" class="btn btn-secondary">Éditer</a>
+						<form action="{{ path('app_film_delete', {titre: film.titre}) }}" method="POST">
+							<input type="hidden" name="_method" , value="DELETE">
+							<input type="submit" value="Supprimer" class="btn btn-danger">
+						</form>
+					{% endif %}
 				</li>
 			{% endfor %}
 		</ul>
 
-		<a href=" {{ path('app_film_new') }} " class="btn btn-primary">Ajouter un nouveau film</a>
+		{% if is_granted('ROLE_USER') %}
+			<a href=" {{ path('app_film_new') }} " class="btn btn-primary">Ajouter un nouveau film</a>
+		{% endif %}
 	</div>
 {% endblock %}

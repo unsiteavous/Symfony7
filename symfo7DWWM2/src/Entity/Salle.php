@@ -6,6 +6,7 @@ use App\Repository\SalleRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
+use App\Validator as selfAssert;
 
 #[ORM\Entity(repositoryClass: SalleRepository::class)]
 #[UniqueEntity(fields: 'nom', message: "La salle '{{ value }}' existe déjà.")]
@@ -18,6 +19,7 @@ class Salle
 
     #[ORM\Column(length: 100)]
     #[Assert\NotBlank(message: "Le nom ne peut pas rester vide.")]
+    #[selfAssert\BlocSpam()]
     private ?string $nom = null;
 
     #[ORM\Column]

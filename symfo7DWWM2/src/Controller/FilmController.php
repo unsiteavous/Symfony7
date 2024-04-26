@@ -10,10 +10,13 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 #[Route('/film', name: "app_film_")]
+
 class FilmController extends AbstractController
 {
+
     #[Route('s', name: 'index')]
     public function index(FilmRepository $filmRepository): Response
     {
@@ -23,6 +26,7 @@ class FilmController extends AbstractController
         ]);
     }
 
+    #[IsGranted('ROLE_USER', message:"Tu n'as rien à faire là.")]
     #[Route('/new', name: "new", methods:['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $em): Response
     {
@@ -52,6 +56,7 @@ class FilmController extends AbstractController
         ]);
     }
 
+    #[IsGranted('ROLE_USER')]
     #[Route('/{titre}', name: 'delete', methods:['DELETE'])]
     public function delete(Film $film, EntityManagerInterface $em): Response
     {
@@ -62,6 +67,7 @@ class FilmController extends AbstractController
         return $this->redirectToRoute('app_film_index');
     }
 
+    #[IsGranted('ROLE_USER')]
     #[Route('/{titre}/edit', name:'edit', methods:['GET', 'PUT'])]
     public function edit(Film $film, Request $request, EntityManagerInterface $em) : Response
     {
