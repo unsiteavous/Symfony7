@@ -7,7 +7,10 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Validator\Constraints as Assert;
 
+#[UniqueEntity(fields: ['titre', 'urlAffiche'], message: "Ce champ est déjà utilisé")]
 #[ORM\Entity(repositoryClass: FilmRepository::class)]
 class Film
 {
@@ -17,9 +20,12 @@ class Film
     private ?int $id = null;
 
     #[ORM\Column(length: 255, unique: true)]
+    #[Assert\NotBlank(message: "Le titre ne peut pas rester vide.")]
+    #[Assert\Length(min: 5, max: 255, minMessage: "Le titre doit comporter plus de 5 caractères.", maxMessage: "Le titre ne peut pas avoir plus de 255 caractères.")]
     private ?string $titre = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\Url(message: "L'url n'est pas valide.")]
     private ?string $urlAffiche = null;
 
     #[ORM\Column(length: 255, nullable: true)]
@@ -29,6 +35,8 @@ class Film
     private ?\DateTimeInterface $duree = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    #[Assert\LessThanOrEqual('+1 year', message:"La date de sortie doit être inférieure au {{ compared_value }}.")]
+    #[Assert\GreaterThan('01-01-1800', message:"La date de sortie doit être supérieure au {{ compared_value }}.")]
     private ?\DateTimeInterface $dateSortie = null;
 
     #[ORM\ManyToOne(inversedBy: 'films')]

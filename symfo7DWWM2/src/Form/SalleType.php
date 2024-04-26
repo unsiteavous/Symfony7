@@ -2,30 +2,30 @@
 
 namespace App\Form;
 
-use App\Entity\Classification;
+use App\Entity\Salle;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class ClassificationType extends AbstractType
+class SalleType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('intitule',TextType::class,  [
-                'empty_data' => ''
+            ->add('nom')
+            ->add('places')
+            ->add('accessibilite', CheckboxType::class, [
+                'required'=> false,
+                'label' => "La salle est accessible aux personnes à mobilité réduite."
             ])
-            ->add('avertissement')
-            ->add('Enregistrer', SubmitType::class)
         ;
     }
 
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'data_class' => Classification::class,
+            'data_class' => Salle::class,
         ]);
     }
 }

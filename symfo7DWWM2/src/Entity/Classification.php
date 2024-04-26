@@ -6,8 +6,11 @@ use App\Repository\ClassificationRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: ClassificationRepository::class)]
+#[UniqueEntity('intitule', message: "Cet intitulé existe déjà.")]
 class Classification
 {
     #[ORM\Id]
@@ -16,6 +19,8 @@ class Classification
     private ?int $id = null;
 
     #[ORM\Column(length: 255, unique: true)]
+    #[Assert\NotBlank(message: "L'intitulé ne peut pas rester vide.")]
+    #[Assert\Length(min: 5, max: 255, minMessage: "L'intitulé doit comporter plus de 5 caractères.", maxMessage: "L'intitulé ne peut pas avoir plus de 255 caractères.")]
     private ?string $intitule = null;
 
     #[ORM\Column(length: 255, nullable: true)]

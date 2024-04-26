@@ -6,8 +6,12 @@ use App\Repository\CategorieRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\Constraints\NoSuspiciousCharacters;
 
 #[ORM\Entity(repositoryClass: CategorieRepository::class)]
+#[UniqueEntity('nom', message: "Ce nom est déjà pris.")]
 class Categorie
 {
     #[ORM\Id]
@@ -16,6 +20,9 @@ class Categorie
     private ?int $id = null;
 
     #[ORM\Column(length: 255, unique: true)]
+    #[Assert\NotBlank(message:"Un nom est requis.")]
+    #[Assert\NoSuspiciousCharacters(checks:NoSuspiciousCharacters::CHECK_INVISIBLE,restrictionLevel: NoSuspiciousCharacters::RESTRICTION_LEVEL_HIGH )]
+    #[Assert\Length(min: 2, minMessage:"Le nom doit contenir au minimum 2 caractères.", max: 255, maxMessage:"Moins long steuplé")]
     private ?string $nom = null;
 
     #[ORM\Column(length: 255, nullable: true)]
