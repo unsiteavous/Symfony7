@@ -6,24 +6,45 @@ Dans le `.env`, nous devons ajuster la ligne du `MAILER_DSN` :
 
 voici plusieurs configurations possibles en fonction de vos envies :
 
-### Vous avez configuré sendmail et votre `php.ini` sur votre ordinateur :
+
+### Vous avez envie de travailler avec maildev :
 
 ```yaml
 ###> symfony/mailer ###
-MAILER_DSN=sendmail://default
+MAILER_DSN=smtp://localhost:1025
 ###< symfony/mailer ###
 ```
-### Vous avez configuré sendmail et votre `php.ini` sur votre ordinateur :
+### Vous avez envie de contacter directement votre serveur mail (sans passer par php.ini ) :
 
 ```yaml
 ###> symfony/mailer ###
-MAILER_DSN=sendmail://default
+MAILER_DSN=smtp://adresseMail:motDePasse@serveur:port
+
+# Exemple avec google :
+MAILER_DSN=smtp://adresseMail:motDePasseApplication@smtp-relay.gmail.com:587
 ###< symfony/mailer ###
 ```
-### Vous avez configuré sendmail et votre `php.ini` sur votre ordinateur :
+
+>### Vous avez configuré sendmail et votre `php.ini` sur votre ordinateur :
+>
+> ```yaml
+> ###> symfony/mailer ###
+> MAILER_DSN=native://default
+> ###< symfony/mailer ###
+> ```
+> Cette version n'est pas recommandée par symfony, et moi-même me suis confronté à plusieurs difficultés avec ça. Je vous conseille une des deux précédentes.
+> <br>
+> <br>
+
+
+## Modifier le messenger
+
+Dans symfony, il y a pleins de choses qui sont prêtes à nous aider. Bon dans notre ça, ça nous dérange plus qu'autre chose, on va devoir commenter une ligne qui empêche l'exécution de l'envoi des mail :
+
+Dans le fichier `config/packages/messenger.yaml`, commentez cette ligne :
 
 ```yaml
-###> symfony/mailer ###
-MAILER_DSN=sendmail://default
-###< symfony/mailer ###
+# Symfony\Component\Mailer\Messenger\SendEmailMessage: async
 ```
+
+Et ça y est, vous pouvez envoyer des mails ! 
