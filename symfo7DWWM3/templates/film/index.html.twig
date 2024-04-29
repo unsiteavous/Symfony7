@@ -15,8 +15,10 @@
     {% for film in films %}
         <li>
         <a href=" {{ path('app_film_show', {nom: film.nom }) }} ">{{film.nom}}</a>
-        <a href=" {{ path('app_film_delete', {id: film.id} ) }} " class="btn btn-danger">Supprimer</a>
-        <a href=" {{ path('app_film_update', {id: film.id} ) }} " class="btn btn-primary">Modifier</a>
+        {% if is_granted('ROLE_USER') %}
+            <a href=" {{ path('app_film_delete', {id: film.id} ) }} " class="btn btn-danger">Supprimer</a>
+            <a href=" {{ path('app_film_update', {id: film.id} ) }} " class="btn btn-primary">Modifier</a>
+        {% endif %}
         </li>
     {% endfor %}
     </ul>
