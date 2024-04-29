@@ -5,7 +5,9 @@ namespace App\Controller;
 use App\Entity\Classification;
 use App\Form\ClassificationType;
 use App\Repository\ClassificationRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
@@ -29,10 +31,22 @@ class ClassificationController extends AbstractController
         ]);
     }
 
-    #[Route('/new', name: 'new', methods: ['GET'], priority: 1)]
-    public function new() : Response
+    #[Route('/new', name: 'new', methods: ['GET', 'POST'], priority: 1)]
+    public function new(Request $request, EntityManagerInterface $em) : Response
     {
         $form = $this->createForm(ClassificationType::class);
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $classification = $form->getData();
+            $em->persist($classification);
+            $em->flush();
+
+            $this->addFlash('success', "La classification a bien été créée.");
+            return $this->redirectToRoute('app_classification_index');
+        }
+
         return $this->render('classification/new.html.twig', [
             'formNew' => $form
         ]);

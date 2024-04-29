@@ -6,8 +6,11 @@ use App\Repository\CategorieRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: CategorieRepository::class)]
+#[UniqueEntity(fields: 'nom', message:'Ce nom est déjà attribué à une autre catégorie.')]
 class Categorie
 {
     #[ORM\Id]
@@ -16,9 +19,12 @@ class Categorie
     private ?int $id = null;
 
     #[ORM\Column(length: 100, nullable: false, unique: true)]
+    #[Assert\NotBlank(message: 'Le nom ne doit pas être vide.')]
+    #[Assert\Length(max: 100, min: 3, minMessage: "Le nom doit faire plus de 2 caractères", maxMessage: "Moins long Steupléééé")]
     private ?string $nom = null;
 
     #[ORM\Column(length: 255, nullable: true)]
+    #[Assert\Length(max: 255, maxMessage: "Moins long Steupléééé")]
     private ?string $description = null;
 
     /**

@@ -7,7 +7,10 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Validator\Constraints as Assert;
 
+#[UniqueEntity(fields: 'nom', message: 'Ce nom est déjà utilisé.')]
 #[ORM\Entity(repositoryClass: FilmRepository::class)]
 class Film
 {
@@ -16,22 +19,33 @@ class Film
     #[ORM\Column]
     private ?int $id = null;
 
+    #[Assert\Length(min: 2, max: 100, minMessage: "Le nom du film doit avoir 2 caractères minimum.", maxMessage: "Moins long steuplé !")]
+    #[Assert\NotBlank(message: "Le nom ne peut pas être vide.")]
     #[ORM\Column(length: 100)]
     private ?string $nom = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank(message: "L'url de l'affiche ne peut pas être vide.")]
+    #[Assert\Url(message: "Merci d'entrer une url valide.")]
     private ?string $urlAffiche = null;
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $lienTrailer = null;
 
     #[ORM\Column(type: Types::TEXT)]
+    #[Assert\NotBlank(message: "Le résumé ne peut pas être vide.")]
     private ?string $resume = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    #[Assert\NotBlank(message: "La durée ne peut pas être vide.")]
+    #[Assert\LessThan("01-01-1970 10:00:00", message: "La durée doit être inférieure à 10h.")]
+    #[Assert\GreaterThanOrEqual("01-01-1970 00:03:00", message: "La durée doit être supérieure ou égale à 3min.")]
     private ?\DateTimeInterface $duree = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    #[Assert\NotBlank(message: "La date de sortie ne peut pas être vide.")]
+    #[Assert\GreaterThan("28-12-1895 00:00:00", message: "La date de sortie ne peut pas etre antérieure au 28/12/1895.")]
+    #[Assert\LessThan("+1 year", message: "La date de sortie ne peut dépasser {{ compared_value }}.")]
     private ?\DateTimeInterface $dateSortie = null;
 
     /**
