@@ -2,6 +2,7 @@
 framework:
     secret: '%env(APP_SECRET)%'
     #csrf_protection: true
+    http_method_override: true
 
     # Note that the session will be started ONLY if you read or write from it.
     session: true

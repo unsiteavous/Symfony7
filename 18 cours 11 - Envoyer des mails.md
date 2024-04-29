@@ -21,7 +21,8 @@ MAILER_DSN=smtp://localhost:1025
 MAILER_DSN=smtp://adresseMail:motDePasse@serveur:port
 
 # Exemple avec google :
-MAILER_DSN=smtp://adresseMail:motDePasseApplication@smtp-relay.gmail.com:587
+# Le mot de passe d'application contient des espaces : remplacez-les par %20
+MAILER_DSN=smtp://adresseMail:mot%20De%20Passe%20Application@smtp.gmail.com:587
 ###< symfony/mailer ###
 ```
 

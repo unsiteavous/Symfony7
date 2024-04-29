@@ -54,4 +54,21 @@ class CategorieController extends AbstractController
             'form' => $form
         ]);
     }
+
+    #[Route('/{nom}/edit', name: 'edit', methods: ['GET', 'PUT'])]
+    public function edit(Categorie $categorie, Request $request, EntityManagerInterface $em): Response
+    {
+        $form = $this->createForm(CategorieType::class, $categorie, ['method' => 'PUT']);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $categorie = $form->getData();
+            $em->flush();
+            $this->addFlash('success', "La catégorie a été mise à jour.");
+            return $this->redirectToRoute('app_categorie_index');
+        }
+        return $this->render('categorie/edit.html.twig', [
+            'form' => $form,
+            'categorie' => $categorie
+        ]);
+    }
 }
