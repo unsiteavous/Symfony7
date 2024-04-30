@@ -8,6 +8,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[UniqueEntity(fields: 'nom', message: 'Ce nom est déjà utilisé.')]
@@ -17,45 +18,58 @@ class Film
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups('api_film_index')]
     private ?int $id = null;
 
     #[Assert\Length(min: 2, max: 100, minMessage: "Le nom du film doit avoir 2 caractères minimum.", maxMessage: "Moins long steuplé !")]
     #[Assert\NotBlank(message: "Le nom ne peut pas être vide.")]
     #[ORM\Column(length: 100)]
+    #[Groups([
+        'api_film_index',
+        'api_categorie_index',
+        'api_classification_show'
+    ])]
     private ?string $nom = null;
 
     #[ORM\Column(length: 255)]
     #[Assert\NotBlank(message: "L'url de l'affiche ne peut pas être vide.")]
     #[Assert\Url(message: "Merci d'entrer une url valide.")]
+    #[Groups('api_film_show')]
     private ?string $urlAffiche = null;
 
     #[ORM\Column(length: 255, nullable: true)]
+    #[Groups('api_film_show')]
     private ?string $lienTrailer = null;
 
     #[ORM\Column(type: Types::TEXT)]
     #[Assert\NotBlank(message: "Le résumé ne peut pas être vide.")]
+    #[Groups('api_film_show')]
     private ?string $resume = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     #[Assert\NotBlank(message: "La durée ne peut pas être vide.")]
     #[Assert\LessThan("01-01-1970 10:00:00", message: "La durée doit être inférieure à 10h.")]
     #[Assert\GreaterThanOrEqual("01-01-1970 00:03:00", message: "La durée doit être supérieure ou égale à 3min.")]
+    #[Groups('api_film_show')]
     private ?\DateTimeInterface $duree = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     #[Assert\NotBlank(message: "La date de sortie ne peut pas être vide.")]
     #[Assert\GreaterThan("28-12-1895 00:00:00", message: "La date de sortie ne peut pas etre antérieure au 28/12/1895.")]
     #[Assert\LessThan("+1 year", message: "La date de sortie ne peut dépasser {{ compared_value }}.")]
+    #[Groups('api_film_show')]
     private ?\DateTimeInterface $dateSortie = null;
 
     /**
      * @var Collection<int, Categorie>
      */
     #[ORM\ManyToMany(targetEntity: Categorie::class, inversedBy: 'films')]
+    #[Groups('api_film_show')]
     private Collection $categories;
 
     #[ORM\ManyToOne(inversedBy: 'films')]
     #[ORM\JoinColumn(nullable: false)]
+    #[Groups('api_film_show')]
     private ?Classification $classification = null;
 
     public function __construct()

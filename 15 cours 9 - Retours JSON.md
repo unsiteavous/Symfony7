@@ -112,13 +112,13 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
     // On valide les données reçues :
     $errors = $validator->validate($film);
-    $messages = [];
-    foreach ($errors as $error) {
-      $messages[] = $error->getMessage();
-    }
 
-    // S'il y a des erreurs, on s'arrête là :
+    // S'il y a des erreurs, on s'arrête là et on retourne les erreurs à l'envoyeur :
     if ($errors->count()) {
+      $messages = [];
+      foreach ($errors as $error) {
+        $messages[] = $error->getMessage();
+      }
       return $this->json($messages, Response::HTTP_UNPROCESSABLE_ENTITY);
     }else {
 

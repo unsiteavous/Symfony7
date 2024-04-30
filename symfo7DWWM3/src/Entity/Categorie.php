@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: CategorieRepository::class)]
@@ -16,21 +17,33 @@ class Categorie
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups('api_categorie_index')]
     private ?int $id = null;
 
     #[ORM\Column(length: 100, nullable: false, unique: true)]
     #[Assert\NotBlank(message: 'Le nom ne doit pas être vide.')]
-    #[Assert\Length(max: 100, min: 3, minMessage: "Le nom doit faire plus de 2 caractères", maxMessage: "Moins long Steupléééé")]
+    #[Assert\Length(
+        max: 100,
+        min: 3,
+        minMessage: "Le nom doit faire plus de 2 caractères",
+        maxMessage: "Moins long Steupléééé"
+    )]
+    #[Groups([
+        'api_film_show',
+        'api_categorie_index'
+    ])]
     private ?string $nom = null;
 
     #[ORM\Column(length: 255, nullable: true)]
     #[Assert\Length(max: 255, maxMessage: "Moins long Steupléééé")]
+    #[Groups('api_categorie_index')]
     private ?string $description = null;
 
     /**
      * @var Collection<int, Film>
      */
     #[ORM\ManyToMany(targetEntity: Film::class, mappedBy: 'categories')]
+    #[Groups('api_categorie_index')]
     private ?Collection $films = null;
 
     public function __construct()
