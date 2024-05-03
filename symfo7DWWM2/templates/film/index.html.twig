@@ -25,6 +25,11 @@
 				{{ message | join('<br>') }}
 			</div>
 		{% endfor %}
+		{% for message in app.flashes('note') %}
+			<div class="bg-success">
+				{{ message | join('<br>') }}
+			</div>
+		{% endfor %}
 		<ul>
 			{% for film in films %}
 				<li>

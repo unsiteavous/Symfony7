@@ -10,6 +10,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 #[Route('/film', name: "app_film_")]
@@ -26,29 +27,37 @@ class FilmController extends AbstractController
         ]);
     }
 
-    #[IsGranted('ROLE_USER', message:"Tu n'as rien à faire là.")]
-    #[Route('/new', name: "new", methods:['GET', 'POST'])]
+    #[IsGranted('ROLE_USER', message: "Tu n'as rien à faire là.")]
+    #[Route('/new', name: "new", methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $em): Response
     {
-        $form = $this->createForm(FilmType::class);
+        try {
+            $form = $this->createForm(FilmType::class);
 
-        $form->handleRequest($request);
+            $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $film = $form->getData();
-            $em->persist($film);
-            $em->flush();
+            if ($form->isSubmitted() && $form->isValid()) {
+                $film = $form->getData();
+                $em->persist($film);
+                $em->flush();
 
-            $this->addFlash('success', 'Le film est créé.');
-            return $this->redirectToRoute('app_film_index');
+                $this->addFlash('success', 'Le film est créé.');
+                return $this->redirectToRoute('app_film_index');
+            }
+
+            return $this->render('film/form.html.twig', [
+                'form' => $form
+            ]);
+        } catch (AccessDeniedException $e) {
+            // Récupérez le message d'accès refusé
+            $errorMessage = $e->getMessage();
+
+            // Vous pouvez maintenant utiliser $errorMessage comme bon vous semble, par exemple le transmettre à votre vue
+            return new Response($errorMessage, 403);
         }
-
-        return $this->render('film/form.html.twig', [
-            'form' => $form
-        ]);
     }
 
-    #[Route("/{titre}", name: 'show', methods:['GET'])]
+    #[Route("/{titre}", name: 'show', methods: ['GET'])]
     public function show(Film $film)
     {
         return $this->render('film/show.html.twig', [
@@ -57,21 +66,21 @@ class FilmController extends AbstractController
     }
 
     #[IsGranted('ROLE_USER')]
-    #[Route('/{titre}', name: 'delete', methods:['DELETE'])]
+    #[Route('/{titre}', name: 'delete', methods: ['DELETE'])]
     public function delete(Film $film, EntityManagerInterface $em): Response
     {
         $em->remove($film);
         $em->flush();
 
-        $this->addFlash('success', 'Le film '.$film->getTitre().' a bien été supprimé.');
+        $this->addFlash('success', 'Le film ' . $film->getTitre() . ' a bien été supprimé.');
         return $this->redirectToRoute('app_film_index');
     }
 
-    #[IsGranted('ROLE_USER')]
-    #[Route('/{titre}/edit', name:'edit', methods:['GET', 'PUT'])]
-    public function edit(Film $film, Request $request, EntityManagerInterface $em) : Response
+    #[IsGranted('ROLE_USER', message: "Tu ne peux pas modifier")]
+    #[Route('/{titre}/edit', name: 'edit', methods: ['GET', 'PUT'])]
+    public function edit(Film $film, Request $request, EntityManagerInterface $em): Response
     {
-        $form = $this->createForm(FilmType::class, $film, ['method'=> 'PUT']);
+        $form = $this->createForm(FilmType::class, $film, ['method' => 'PUT']);
 
         $form->handleRequest($request);
 
@@ -79,12 +88,12 @@ class FilmController extends AbstractController
             $em->flush($film);
 
             $this->addFlash('success', 'Le film a bien été mis à jour.');
-            return $this->redirectToRoute('app_film_show', ['titre'=> $film->getTitre()]);
+            return $this->redirectToRoute('app_film_show', ['titre' => $film->getTitre()]);
         }
 
         return $this->render('film/form.html.twig', [
-            'form'=>$form,
-            'film'=>$film
+            'form' => $form,
+            'film' => $film
         ]);
     }
 }

@@ -22,3 +22,11 @@ services:
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
+
+
+    App\EventListener\AccessDeniedListener:
+        arguments:
+            $urlGenerator: '@Symfony\Component\Routing\Generator\UrlGeneratorInterface'
+            $requestStack: '@request_stack'
+        tags:
+            - { name: kernel.event_listener, event: kernel.exception }
