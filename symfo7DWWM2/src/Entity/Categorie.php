@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Constraints\NoSuspiciousCharacters;
 
@@ -17,21 +18,34 @@ class Categorie
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups([
+        'api_categorie_index'
+        ])]
     private ?int $id = null;
 
     #[ORM\Column(length: 255, unique: true)]
     #[Assert\NotBlank(message:"Un nom est requis.")]
     #[Assert\NoSuspiciousCharacters(checks:NoSuspiciousCharacters::CHECK_INVISIBLE,restrictionLevel: NoSuspiciousCharacters::RESTRICTION_LEVEL_HIGH )]
     #[Assert\Length(min: 2, minMessage:"Le nom doit contenir au minimum 2 caractères.", max: 255, maxMessage:"Moins long steuplé")]
+    #[Groups([
+        'api_categorie_index',
+        'api_film_index',
+        'api_categorie_new'
+    ])]
     private ?string $nom = null;
 
     #[ORM\Column(length: 255, nullable: true)]
+    #[Groups([
+        'api_categorie_show',
+        'api_categorie_new'
+    ])]
     private ?string $description = null;
 
     /**
      * @var Collection<int, Film>
      */
     #[ORM\ManyToMany(targetEntity: Film::class, mappedBy: 'categorie')]
+    #[Groups(['api_categorie_show'])]
     private Collection $films;
 
     public function __construct()

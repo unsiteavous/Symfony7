@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: ClassificationRepository::class)]
@@ -16,20 +17,27 @@ class Classification
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups('api_classification_index')]
     private ?int $id = null;
 
     #[ORM\Column(length: 255, unique: true)]
     #[Assert\NotBlank(message: "L'intitulé ne peut pas rester vide.")]
     #[Assert\Length(min: 5, max: 255, minMessage: "L'intitulé doit comporter plus de 5 caractères.", maxMessage: "L'intitulé ne peut pas avoir plus de 255 caractères.")]
+    #[Groups([
+        'api_classification_index',
+        'api_film_index'
+    ])]
     private ?string $intitule = null;
 
     #[ORM\Column(length: 255, nullable: true)]
+    #[Groups('api_classification_show')]
     private ?string $avertissement = null;
 
     /**
      * @var Collection<int, Film>
      */
     #[ORM\OneToMany(targetEntity: Film::class, mappedBy: 'classification')]
+    #[Groups('api_classification_show')]
     private Collection $films;
 
     public function __construct()
