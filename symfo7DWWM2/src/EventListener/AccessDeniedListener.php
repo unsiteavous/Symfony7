@@ -6,13 +6,14 @@ use Symfony\Component\HttpKernel\Event\ExceptionEvent;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class AccessDeniedListener implements EventSubscriberInterface
 {
-  public function __construct(private UrlGeneratorInterface $urlGenerator, private RequestStack $requestStack)
+  public function __construct(private UrlGeneratorInterface $urlGenerator)
   {
 
   }
@@ -37,8 +38,7 @@ class AccessDeniedListener implements EventSubscriberInterface
     $message = $exception->getMessage();
 
     // Générer une réponse avec le message d'erreur
-    $request = $this->requestStack->getCurrentRequest();
-    $request->getSession()->getFlashBag()->add('note', $message);
+    $event->getRequest()->getSession()->getFlashBag()->add('note', $message);
     $response = new RedirectResponse($this->urlGenerator->generate('app_film_index'));
 
     // Envoyer la réponse

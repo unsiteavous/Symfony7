@@ -25,8 +25,5 @@ services:
 
 
     App\EventListener\AccessDeniedListener:
-        arguments:
-            $urlGenerator: '@Symfony\Component\Routing\Generator\UrlGeneratorInterface'
-            $requestStack: '@request_stack'
         tags:
             - { name: kernel.event_listener, event: kernel.exception }

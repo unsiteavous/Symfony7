@@ -6,6 +6,7 @@ use App\Entity\Classification;
 use App\Repository\ClassificationRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -73,5 +74,30 @@ class ClassificationController extends AbstractController
     public function show(Classification $classification): Response
     {
         return $this->json(data: $classification, context: ['groups' => ['api_classification_index', 'api_classification_show']]);
+    }
+
+    #[Route('/{intitule}/edit', name: 'edit', methods: ['POST', 'PUT'])]
+    public function edit(Classification $classification, Request $request, EntityManagerInterface $em, ValidatorInterface $validator, SerializerInterface $serializer): JsonResponse
+    {
+        $classificationDeserialisee = $serializer->deserialize($request->getContent(), Classification::class, 'json', ['groups' => ['api_classification_new']]);
+
+        $errors = $validator->validate($classificationDeserialisee);
+
+        if ($errors->count()) {
+            $messages = [];
+            foreach($errors as $error) {
+                $messages = $error->getMessage();
+            }
+            return $this->json($messages, Response::HTTP_UNPROCESSABLE_ENTITY);
+        } else {
+            $classification
+                ->setIntitule($classificationDeserialisee->getIntitule())
+                ->setAvertissement($classificationDeserialisee->getAvertissement())
+            ;
+
+            $em->flush();
+
+            return $this->json("La classification a bien été mise à jour.", Response::HTTP_ACCEPTED);
+        }
     }
 }
