@@ -1,3 +1,9 @@
 body {
     background-color: skyblue;
 }
+
+button {
+    background-color: var(--primary);
+    color: white; 
+    border-color: var(--primary); 
+}

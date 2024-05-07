@@ -52,6 +52,13 @@ Bon, c'est pas pour autant que nous avons fait une mise en prod. Si on utilise w
 ```npm
 npm run build
 ```
+
+Si vous avez modifié le fichier `app.css` (ou que vous en avez ajouté d'autres dans le `app.js`), il va aussi falloir compiler `importmap` :
+```bash
+symfony console asset-map:compile
+```
+[📜 Documentation de la compilation des importmap](https://symfony.com/doc/current/frontend/asset_mapper.html#serving-assets-in-dev-vs-prod)
+
 ### Passer le `.env` en prod
 Et ce n'est pas tout : il faut aussi modifier la configuration de notre site. Quand vous passerez sur le serveur, il faudra bien modifier les infos de BDD.
 
