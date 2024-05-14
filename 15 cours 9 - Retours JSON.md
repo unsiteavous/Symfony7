@@ -68,13 +68,21 @@ use Symfony\Component\Serializer\Annotation\Groups;
 ```
 Maintenant si vous retournez sur votre route API, vous constatez qu'on récupère bien tous les objets avec seulement leur titre. À nous de mettre toutes les annotations voulues.
 
+> Si le bug n'est pas résolu, c'est que var-exporter n'a pas la bonne version. Attention, cela est circonstanciel : Il est probable que cela soit résolu avec les nouvelles version de symfony, et que cette partie du cours soit obsolète :
+>
+> Il est possible qu'il faille réinstaller `var-exporter` dans une version antérieure :
+> ```bash
+> composer require "symfony/var-exporter=7.0.4"
+>```
+> [*Source à consulter*](https://stackoverflow.com/questions/78285349/ignore-on-proxyclass-setinitialized-cannot-be-added/78407100?noredirect=1)
+
 Et pour les classifications ? C'est quand même utile de les voir ! Si on met l'annotation sur la propriété, on retrouve le bug. Il va falloir le mettre sur le getter cette fois-ci, et dans l'entité `Classification`, on va aussi mettre les annotation devant les champs qu'on veut récupérer : dans ce cas, juste le nom ! 
 
 Et voilà, on a renvoyé du JSON ! 
 
 > Il est possible que vous ayez un problème de dépendance, qui se résout avec cette installation de la librairie manquante :
 >
-> ``` 
+> ```bash
 > composer require "symfony/var-exporter"
 > ```
 
