@@ -95,9 +95,11 @@ composer install --no-dev --optimize-autoloader
 
 Cela télécharge uniquement les dépendances nécessaires à la production (par exemple, pas fakerphp), et ça optimise l'autoloader à fond.
 
-Puis il faut nettoyer le cache de Symfony :
+Puis il faut nettoyer le cache de Symfony, et le créer spécifiquement pour la production :
 ```bash
 symfony console cache:clear
+symfony console cache:warmup --env=prod
+
 ```
 
 Et là, ça y est tout est prêt. Si vous retournez à présent sur votre virtualHost, vous pouvez voir votre site comme sit vous étiez en ligne.
@@ -105,3 +107,14 @@ Et là, ça y est tout est prêt. Si vous retournez à présent sur votre virtua
 Et dans notre cas, pour pouvoir mettre notre application sur le serveur de simplon, on utilisera en plus un fichier nginx.conf comme on a l'habitude de le faire.
 
 Bravo vous avez une app symfony mise en ligne ! 👍👏🎉
+
+## Erreurs ?
+
+Si vous avez des erreurs, vous pouvez rajouter cette ligne à votre fichier `.env.local.php` pour les faire apparaître :
+
+```php
+return array (
+  // [...]
+  'APP_DEBUG' => true,
+);
+```

@@ -8,4 +8,4 @@ nelmio_cors:
         max_age: 3600
     paths:
         '^/api/':
-            allow_origin: ['http://retourapi']
+            allow_origin: ['%env(CORS_ALLOW_FRONT)%']
