@@ -27,3 +27,9 @@ services:
     App\EventListener\AccessDeniedListener:
         tags:
             - { name: kernel.event_listener, event: kernel.exception }
+
+    App\Service\DatabaseTablePrefix:
+        arguments:
+            $prefix: '%env(DB_PREFIX)%'
+        tags:
+            - { name: doctrine.event_listener, event: loadClassMetadata }

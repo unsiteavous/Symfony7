@@ -1,0 +1,75 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+	TWIG
+{% endblock %}
+
+{% block body %}
+
+	{# utilisez set pour assigner à une variable NomComplet, le prénom et le nom de user. #}
+	{% set NomComplet = user.prenom ~ ' ' ~ user.nom %}
+
+	{# Faire un titre : Bonjour NomComplet #}
+	Bonjour
+	{{ NomComplet }}
+
+	<p>
+		{% if user.activated %}
+			✅ Compte activé
+		{% else %}
+			❌ Le compte n'est pas activé
+		{% endif %}
+	</p>
+
+	{# Afficher la date à laquelle l'user a été créé, au format suivant : jour mois Année. #}
+
+	<p>
+		{{ user.createdAt|date('d M Y') }}
+	</p>
+
+	Formater la date avec format_datetime pour afficher le jour et le mois en entier en français, mais sans l'heure
+		  Vous aurez une commande à faire avec composer pour installer le package nécessaire.
+
+	<p>
+		{{ user.createdAt|format_datetime('full', locale: 'fr') }}
+	</p>
+
+
+	{# Pour chaque ligne de user, afficher la clé et la valeur dans un tableau. #}
+
+	<table>
+		<tr>
+			<th>Clé</th>
+			<th>Valeur</th>
+		</tr>
+		{% for cle, valeur in user %}
+			<tr>
+				<td>{{ cle }}</td>
+				<td>
+					{% if cle == 'createdAt' %}
+						{{ valeur|date('d M Y') }}
+					{% elseif cle == 'slogan' %}
+						{{ valeur| raw }}
+					{% else %}
+						{{ valeur }}
+					{% endif %}
+				</td>
+			</tr>
+		{% endfor %}
+	</table>
+
+
+	{# Afficher le slogan, avec les balises HTML éxecutées. Il faut savoir le faire, même s'il faut être très attentif à la sécurité, si c'est du code qui vient de l'utilisateur. #}
+
+	{{ user.slogan | raw }}	
+					
+	{# Dans le fichier header.html.twig, vous allez créer deux boutons :
+	Faites un bouton pour revenir sur la page home, avec url, puis un second avec path, pour aller sur la page twig.
+	Path est souvent utilisé pour les routes internes, et url pour les routes externes. #}
+					
+					  
+					
+	{# Mettez ces deux liens dans une condition, qui écoute la route actuelle : Si la route est home, on affiche twig, et vice versa. #}
+
+
+{% endblock %}

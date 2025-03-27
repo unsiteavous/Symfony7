@@ -22,9 +22,3 @@ services:
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
-
-    App\Service\DatabaseTablePrefix:
-        arguments:
-            $prefix: '%env(PREFIXE_DATABASE_TABLE)%'
-        tags:
-            - { name: doctrine.event_listener, event: loadClassMetadata  }

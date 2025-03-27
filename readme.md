@@ -29,8 +29,6 @@ Et passez au [cours 1](<01 cours 1.md>) 😉
 
 
 # Reste à faire
-* fixtures
 * easyadmin
-* mise en ligne
 * traduction
-* 
+* phpUnit

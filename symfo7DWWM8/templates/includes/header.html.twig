@@ -1,0 +1,10 @@
+<header>
+	{% if app.request.attributes.get('_route') == 'app_home' %}
+		<a href="{{ path('app_twig') }}">Aller à twig</a>
+	{% elseif app.request.pathInfo == path('app_twig') %}
+		<a href="{{ url('app_home') }}">Revenir à la page Home</a>
+	{% endif %}
+	<a href="{{ path('app_about', { 'prenom': 'Pierre' }) }}">Page prénom</a>
+
+	{# {{ dump(app) }} #}
+</header>
