@@ -38,6 +38,9 @@ class Film
     #[ORM\JoinColumn(nullable: false)]
     private ?Classification $Classification = null;
 
+    #[ORM\Column(type: Types::TIME_MUTABLE)]
+    private ?\DateTimeInterface $duree = null;
+
     public function __construct()
     {
         $this->categories = new ArrayCollection();
@@ -132,6 +135,18 @@ class Film
     public function setClassification(?Classification $Classification): static
     {
         $this->Classification = $Classification;
+
+        return $this;
+    }
+
+    public function getDuree(): ?\DateTimeInterface
+    {
+        return $this->duree;
+    }
+
+    public function setDuree(\DateTimeInterface $duree): static
+    {
+        $this->duree = $duree;
 
         return $this;
     }

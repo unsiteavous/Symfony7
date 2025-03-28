@@ -1,5 +1,5 @@
 <header>
-	{% if app.request.attributes.get('_route') == 'app_home' %}
+	{% if app.request.attributes.get('_route') != 'app_home' %}
 		<a href="{{ path('app_home') }}">Accueil</a>
 	{% endif %}
 		<a href="{{ path('app_film_index') }}">Films</a>

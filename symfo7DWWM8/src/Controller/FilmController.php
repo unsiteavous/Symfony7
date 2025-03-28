@@ -28,4 +28,24 @@ final class FilmController extends AbstractController{
             'film' => $film,
         ]); 
     }
+
+    #[Route('/duree/{duration}', name: 'duree', methods: ['GET'], priority: 1)]
+    public function duree(FilmRepository $filmRepository, string $duration): Response
+    {
+        $films = $filmRepository->findAllFilmsWithDurationGreaterThan($duration);
+
+        return $this->render('film/index.html.twig', [
+            'films' => $films,
+        ]); 
+    }
+
+    #[Route('/date/', name: 'date', methods: ['GET'], priority: 1)]
+    public function date(FilmRepository $filmRepository): Response
+    {
+        $films = $filmRepository->findAllFilmsWithDateGreaterThanOneMonth();
+
+        return $this->render('film/index.html.twig', [
+            'films' => $films,
+        ]); 
+    }
 }

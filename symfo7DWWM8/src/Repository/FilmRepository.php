@@ -40,4 +40,39 @@ class FilmRepository extends ServiceEntityRepository
 //            ->getOneOrNullResult()
 //        ;
 //    }
+
+    /**
+     * Fonction qui me permet de récupérer les films qui sont supérieurs à la durée indiquée
+     *
+     * @param string $duration La durée indiquée avec ce format : 00:00 (heures:minutes)
+     * @return array
+     */
+    public function findAllFilmsWithDurationGreaterThan(string $duration): array
+    {
+        $duration = new \DateTime('1970-01-01 '.$duration.':00');
+
+        return $this->createQueryBuilder('film')
+            ->where('film.duree > :duration')
+            ->orderBy('film.duree', 'ASC')
+            ->setParameter(':duration', $duration)
+            ->getQuery()
+            ->getResult();
+    }
+
+    /**
+     * Fonction qui me permet de récupérer les films qui sont sortis il y a moins d'un mois
+     *
+     * @return array
+     */
+    public function findAllFilmsWithDateGreaterThanOneMonth(): array
+    {
+        $date = new \DateTime('now - 1 month');
+
+        return $this->createQueryBuilder('film')
+            ->where('film.dateSortie > :date')
+            ->orderBy('film.dateSortie', 'ASC')
+            ->setParameter(':date', $date)
+            ->getQuery()
+            ->getResult();
+    }
 }
