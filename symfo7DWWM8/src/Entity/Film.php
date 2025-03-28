@@ -34,6 +34,10 @@ class Film
     #[ORM\Column(length: 255)]
     private ?string $lienTrailer = null;
 
+    #[ORM\ManyToOne(inversedBy: 'films')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Classification $Classification = null;
+
     public function __construct()
     {
         $this->categories = new ArrayCollection();
@@ -116,6 +120,18 @@ class Film
     public function setLienTrailer(string $lienTrailer): static
     {
         $this->lienTrailer = $lienTrailer;
+
+        return $this;
+    }
+
+    public function getClassification(): ?Classification
+    {
+        return $this->Classification;
+    }
+
+    public function setClassification(?Classification $Classification): static
+    {
+        $this->Classification = $Classification;
 
         return $this;
     }

@@ -2,13 +2,13 @@
 
 namespace App\Entity;
 
-use App\Repository\CategoryRepository;
+use App\Repository\ClassificationRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: CategoryRepository::class)]
-class Category
+#[ORM\Entity(repositoryClass: ClassificationRepository::class)]
+class Classification
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -18,10 +18,13 @@ class Category
     #[ORM\Column(length: 30)]
     private ?string $name = null;
 
+    #[ORM\Column(length: 300)]
+    private ?string $avertissement = null;
+
     /**
      * @var Collection<int, Film>
      */
-    #[ORM\ManyToMany(targetEntity: Film::class, inversedBy: 'categories')]
+    #[ORM\OneToMany(targetEntity: Film::class, mappedBy: 'Classification')]
     private Collection $films;
 
     public function __construct()
@@ -46,6 +49,18 @@ class Category
         return $this;
     }
 
+    public function getAvertissement(): ?string
+    {
+        return $this->avertissement;
+    }
+
+    public function setAvertissement(string $avertissement): static
+    {
+        $this->avertissement = $avertissement;
+
+        return $this;
+    }
+
     /**
      * @return Collection<int, Film>
      */
@@ -58,6 +73,7 @@ class Category
     {
         if (!$this->films->contains($film)) {
             $this->films->add($film);
+            $film->setClassification($this);
         }
 
         return $this;
@@ -65,9 +81,13 @@ class Category
 
     public function removeFilm(Film $film): static
     {
-        $this->films->removeElement($film);
+        if ($this->films->removeElement($film)) {
+            // set the owning side to null (unless already changed)
+            if ($film->getClassification() === $this) {
+                $film->setClassification(null);
+            }
+        }
 
         return $this;
     }
-
 }

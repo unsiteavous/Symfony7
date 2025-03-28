@@ -1,0 +1,9 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ category.name }}{% endblock %}
+
+{% block body %}
+  {{ dump(category) }}
+  <h1>{{ category.name }}</h1>
+
+{% endblock %}
