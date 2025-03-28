@@ -1,0 +1,15 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Liste des films{% endblock %}
+
+{% block body %}
+    <h1>Liste des films</h1>
+
+    <ul>
+        {% for film in films %}
+            <li>
+                <a href=" {{ path('app_film_show', {'titre': film.titre})}}">{{ film.titre }}</a>
+            </li>
+        {% endfor %}
+    </ul>
+{% endblock %}

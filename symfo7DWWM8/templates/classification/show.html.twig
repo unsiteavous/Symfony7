@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ classification.name }}{% endblock %}
+
+{% block body %}
+  <h1>{{ classification.name }}</h1>
+
+  <ul>
+    {% for film in classification.films %}
+      <li><a href=" {{ path('app_film_show', {'titre': film.titre})}}">{{ film.titre }}</a></li>
+    {% endfor %}
+  </ul>
+{% endblock %}

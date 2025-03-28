@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ film.titre }}{% endblock %}
+
+{% block body %}
+  <h1>{{ film.titre }}</h1>
+
+  <p>{{ film.dateSortie | format_datetime('long', 'none', locale: 'fr') }}</p>
+
+  <p>{{ film.affiche }}</p>
+{% endblock %}

@@ -1,10 +1,9 @@
 <header>
 	{% if app.request.attributes.get('_route') == 'app_home' %}
-		<a href="{{ path('app_twig') }}">Aller à twig</a>
-	{% elseif app.request.pathInfo == path('app_twig') %}
-		<a href="{{ url('app_home') }}">Revenir à la page Home</a>
+		<a href="{{ path('app_home') }}">Accueil</a>
 	{% endif %}
-	<a href="{{ path('app_about', { 'prenom': 'Pierre' }) }}">Page prénom</a>
+		<a href="{{ path('app_film_index') }}">Films</a>
+		<a href="{{ url('app_category_index') }}">catégories</a>
+		<a href="{{ url('app_classification_index') }}">Classifications</a>
 
-	{# {{ dump(app) }} #}
 </header>
