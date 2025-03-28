@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1:3306
--- Généré le : ven. 28 mars 2025 à 15:24
+-- Généré le : ven. 28 mars 2025 à 16:00
 -- Version du serveur : 9.1.0
 -- Version de PHP : 8.3.14
 
@@ -64,6 +64,7 @@ CREATE TABLE IF NOT EXISTS `category_film` (
 
 INSERT INTO `category_film` (`category_id`, `film_id`) VALUES
 (1, 3),
+(1, 4),
 (2, 1),
 (2, 2);
 
@@ -79,7 +80,7 @@ CREATE TABLE IF NOT EXISTS `classification` (
   `name` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
   `avertissement` varchar(300) COLLATE utf8mb4_unicode_ci NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Déchargement des données de la table `classification`
@@ -88,7 +89,8 @@ CREATE TABLE IF NOT EXISTS `classification` (
 INSERT INTO `classification` (`id`, `name`, `avertissement`) VALUES
 (1, '-18', 'interdit aux moins de 18 ans'),
 (2, '-12', 'interdit aux moins de 12 ans'),
-(3, 'tout public', 'Films accessibles à tous');
+(3, 'tout public', 'Films accessibles à tous'),
+(4, 'bidon', 'Parfait');
 
 -- --------------------------------------------------------
 
@@ -131,7 +133,7 @@ CREATE TABLE IF NOT EXISTS `film` (
   `duree` time NOT NULL,
   PRIMARY KEY (`id`),
   KEY `IDX_8244BE222A86559F` (`classification_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Déchargement des données de la table `film`
@@ -140,7 +142,8 @@ CREATE TABLE IF NOT EXISTS `film` (
 INSERT INTO `film` (`id`, `titre`, `date_sortie`, `affiche`, `lien_trailer`, `classification_id`, `duree`) VALUES
 (1, 'Pocahontas', '2012-03-28 08:54:29', 'url affiche', 'lien trailer', 3, '01:00:00'),
 (2, 'Sniper', '2015-03-28 08:54:29', 'url affiche', 'lien trailer', 1, '02:00:00'),
-(3, 'Harry Potter', '2025-03-12 08:54:29', 'url affiche', 'lien trailer', 3, '01:45:00');
+(3, 'Harry Potter', '2025-03-12 08:54:29', 'url affiche', 'lien trailer', 3, '01:45:00'),
+(4, 'nouveau film', '0202-02-02 00:00:00', 'test', 'test', 2, '02:02:00');
 
 -- --------------------------------------------------------
 

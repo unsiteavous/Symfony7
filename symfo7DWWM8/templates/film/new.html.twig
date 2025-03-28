@@ -1,0 +1,12 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Nouveau film
+{% endblock %}
+
+{% block body %}
+	<h1>Nouveau film</h1>
+
+  {{ form(form, {'method': 'POST'}) }}
+
+
+{% endblock %}
