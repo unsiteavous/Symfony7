@@ -6,6 +6,8 @@ use App\Repository\CategoryRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: CategoryRepository::class)]
 class Category
@@ -13,15 +15,20 @@ class Category
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['api_category_index'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 30)]
+    #[Groups(['api_category_index', 'api_category_new'])]
+    #[Assert\NotBlank(message:"Le nom de la catégorie ne peut pas être vide")]
+    #[Assert\Length(min: 3, minMessage:"Le nom de la catégorie doit avoir entre 3 et 30 caractères", max: 30, maxMessage:"Le nom de la catégorie doit avoir entre 3 et 30 caractères")]
     private ?string $name = null;
 
     /**
      * @var Collection<int, Film>
      */
     #[ORM\ManyToMany(targetEntity: Film::class, inversedBy: 'categories')]
+    #[Groups(['api_category_index'])]
     private Collection $films;
 
     public function __construct()
