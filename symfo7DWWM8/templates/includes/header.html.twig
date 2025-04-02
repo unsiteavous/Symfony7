@@ -2,8 +2,14 @@
 	{% if app.request.attributes.get('_route') != 'app_home' %}
 		<a href="{{ path('app_home') }}">Accueil</a>
 	{% endif %}
-		<a href="{{ path('app_film_index') }}">Films</a>
-		<a href="{{ url('app_category_index') }}">catégories</a>
-		<a href="{{ url('app_classification_index') }}">Classifications</a>
+	<a href="{{ path('app_film_index') }}">Films</a>
+	<a href="{{ url('app_category_index') }}">catégories</a>
+	<a href="{{ url('app_classification_index') }}">Classifications</a>
 
+	{% if app.user %}
+		<a href="{{ path('app_logout') }}">Déconnexion</a>
+	{% else %}
+		<a href="{{ path('app_login') }}">Connexion</a>
+		<a href="{{ path('app_register') }}">Inscription</a>
+	{% endif %}
 </header>

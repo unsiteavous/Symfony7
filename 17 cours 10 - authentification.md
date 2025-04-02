@@ -41,7 +41,7 @@ php bin/console make:registration-form
 ```
 Il y aura potentiellement plusieurs commandes à faire par la suite, en fonction des réponses que vous donnez.
 
-> **ATTENTION :** des fichiers ont été créés, mais vous devez encore les personnaliser. Dans plusieurs d'entre eux il reste des *TODO*. Ce n'est pas parce que tout est généré automatiquement qu'on a ri 
+> **ATTENTION :** des fichiers ont été créés, mais vous devez encore les personnaliser. Dans plusieurs d'entre eux il reste des *TODO*. Ce n'est pas parce que tout est généré automatiquement qu'on a rien à faire !
 
 ## Gérer les routes
 Il y a plusieurs manières de gérer les routes. Il ne faut pas oublier que symfony travaille avec des fichiers yaml, qui gèrent pas mal de configurations. Je trouve personnellement que ce n'est pas très pratique d'avoir les autorisations des routes qui sont ailleurs que près de mes routes, ça m'oblige à ouvrir plusieurs fichiers pour savoir qui a le droit d'aller sur telle ou telle route. 

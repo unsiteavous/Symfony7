@@ -25,7 +25,7 @@ final class FilmController extends AbstractController{
     }
 
     #[Route('/{id}', name: 'show', methods: ['GET'])]
-    public function show(Film $film = null): Response
+    public function show(Film $film): Response
     {
         if(!$film){
             return $this->redirectToRoute('app_film_index');
