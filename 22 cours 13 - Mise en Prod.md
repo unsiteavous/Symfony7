@@ -82,7 +82,6 @@ Pour éviter ça, on va copier seulement quelques fichiers dans un nouveau dossi
 * templates
 * .env.local.php
 * composer.json
-* composer.lock
 * importmap.php
 * symfony.lock
 
@@ -118,3 +117,34 @@ return array (
   'APP_DEBUG' => true,
 );
 ```
+
+## Importmap - Cas particulier
+Si votre nom de domaine ne pointe pas vers le dossier public, l'import des assets va coincer. En effet, l'importmap récupère tous les fichiers CSS et JS, et les raccrochent aux templates en mettant comme chemin `/assets/js/mon-js.js` par exemple. 
+
+Dans le cas où mon nom de domaine pointe directement sur le dossier public, aucun problème, les assets sont correctement trouvés. 
+
+Mais dans le cas contraire, si mon site se trouve par exemple sur l'url `https://mon-site.fr/projets/symfony/`, les assets, avec le premier `/` au début, vont chercher quelque chose à l'adresse `https://mon-site.fr/assets/...` et on voit bien que je suis sorti du dossier dans lequel j'avais rangé mon projet. Comme je ne suis plus dans `/projets/symfony/`, les assets ne sont pas trouvés. 
+
+Pour remédier à cela, il faut préciser à symfony quel sera le chemin des assets lors de la compilation (valable que lors du build de prod, ça ne change rien en dev).
+
+Dans `config/packages/framework.yaml`, venir compléter `framework` avec ces lignes :
+
+```yaml
+framework:
+    assets:
+        base_path: '/projets/symfony'
+```
+
+## Routes - Cas particulier
+
+De la même manière que les assets vus juste au-dessus, lorsque le nom de domaine ne pointe pas directement sur le dossier public de notre projet, les routes qu'on a construit en twig avec `path` ou `url` ne sont plus valides. Pour corriger ça, il nous est possible d'ajouter un préfixe à toutes les routes, en ajoutant ceci dans le fichier `config/routes.yaml` :
+
+```yaml
+controllers:
+    resource:
+        path: ../src/Controller/
+        namespace: App\Controller
+    type: attribute
+    prefix: /projet/symfony
+```
+Où `projet/symfony` est évidemment à remplacer par votre chemin à vous 😉

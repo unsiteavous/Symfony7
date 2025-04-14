@@ -27,8 +27,11 @@ final class CategoryController extends AbstractController{
     }
 
     #[Route('/{name}', name: 'show', methods: ['GET'])]
-    public function show(Category $category): Response
+    public function show(?Category $category): Response
     {
+        if (!$category) {
+            return $this->redirectToRoute('app_category_index');
+        }
         return $this->render('category/show.html.twig', [
             'category' => $category,
         ]);

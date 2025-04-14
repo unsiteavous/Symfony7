@@ -7,6 +7,8 @@ framework:
 
     #esi: true
     #fragments: true
+    assets:
+        base_path: 'projet/symfony/public' # précise le chemin des assets, quand le nom de domaine ne pointe pas sur public.
 
 when@test:
     framework:

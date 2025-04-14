@@ -7,7 +7,7 @@
 
   <ul>
     {% for film in classification.films %}
-      <li><a href=" {{ path('app_film_show', {'titre': film.titre})}}">{{ film.titre }}</a></li>
+      <li><a href=" {{ path('app_film_show', {'id': film.id})}}">{{ film.titre }}</a></li>
     {% endfor %}
   </ul>
 {% endblock %}
