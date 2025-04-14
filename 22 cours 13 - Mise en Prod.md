@@ -148,3 +148,35 @@ controllers:
     prefix: /projet/symfony
 ```
 Où `projet/symfony` est évidemment à remplacer par votre chemin à vous 😉
+
+### Pousser un peu plus loin
+Même si la solution au-dessus fonctionne, je la trouve limitée : en effet il faut venir modifier un fichier de conf à la main lors du passage en prod, c'est dangereux : on risque d'oublier, ou de changer en dev et tout casser, ... Bref, on peut faire mieux.
+
+Voici une meilleure solution : 
+Dans le fichier `config/routes.yaml`, on vient lui préciser qu'on va appeler une variable :
+```yaml
+controllers:
+    resource:
+        path: ../src/Controller/
+        namespace: App\Controller
+    type: attribute
+    prefix: '%ROUTE_PREFIX%'
+```
+
+Dans le fichier `config/services.yaml`, on définit cette variable en disant qu'elle sera définie dans le `.env` :
+```yaml
+parameters:
+    ROUTE_PREFIX: '%env(ROUTE_PREFIX)%'
+```
+
+Enfin, dans notre `.env.local` (en dev), on ne met rien, tandis que dans le `.env.local.php` (en prod), on vient préciser le chemin souhaité :
+
+```yaml
+# En Dev :
+ROUTE_PREFIX=
+
+# En Prod :
+ROUTE_PREFIX=/projet/symfony
+```
+
+Et voilà, ça permet de tout gérer au même endroit, c'est à dire dans le `.env` ! Mieux !
