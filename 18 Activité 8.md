@@ -6,4 +6,4 @@
 4. dans une page que vous voulez, accessible sans être connecté, ajoutez en twig une condition, pour afficher une section si vous êtes connecté, une autre si vous ne l'êtes pas.
 
 
-Continuer avec le [cours 11](<19 cours 11.md>).
+Continuer avec le [cours 11](<18 cours 11 - Envoyer des mails.md>).

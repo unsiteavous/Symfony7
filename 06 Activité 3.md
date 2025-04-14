@@ -28,4 +28,4 @@ Elle permettra de voir tous les éléments du film mis en forme.
 ## Et on répète !
 Faites la même chose avec les catégories et les classifications, ça va finir par rentrer ! 😉
 
-Continuer avec la [cours 4](<07 cours 4.md>).
+Continuer avec la [cours 4](<07 cours 4 - Doctrine et requêtes personnalisées.md>).

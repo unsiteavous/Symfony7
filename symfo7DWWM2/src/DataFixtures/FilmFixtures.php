@@ -2,6 +2,8 @@
 
 namespace App\DataFixtures;
 
+use App\Entity\Categorie;
+use App\Entity\Classification;
 use App\Entity\Film;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
@@ -22,14 +24,17 @@ class FilmFixtures extends Fixture implements DependentFixtureInterface
         for ($i = 0; $i < 10; $i++) {
             $film = new Film;
             $film
+              ->setId($i + 1)
               ->setTitre($this->faker->sentence($this->faker->randomDigitNotNull(6)))
               ->setUrlAffiche($this->faker->url())
               ->setLienTrailer($this->faker->url())
               ->setDuree($this->faker->dateTimeBetween('0 hour', "9 hours"))
               ->setDateSortie($this->faker->dateTimeBetween('-54 years', "+1 year"))
-              ->setClassification($this->getReference($this->faker->randomElement(ClassificationFixtures::getClassificationArray())))
-              ->addCategorie($this->getReference($this->faker->randomElement(CategorieFixtures::getCategorieArray())))
+              ->setClassification($this->getReference($this->faker->randomElement(ClassificationFixtures::getClassificationArray()), Classification::class))
+              ->addCategorie($this->getReference($this->faker->randomElement(CategorieFixtures::getCategorieArray()), Categorie::class))
             ;
+
+            $this->addReference('film_' . $film->getId(), $film);
 
             $manager->persist($film);
           }

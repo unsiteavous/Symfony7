@@ -185,4 +185,4 @@ $em = new EntityManagerInterface;
 $film = $em->getRepository(Film::class)->find('id');
 ```
 
-Continuer avec le [cours 6](<10 cours 6.md>).
+Continuer avec le [cours 6](<10 cours 6 - Afficher des messages retour.md>).

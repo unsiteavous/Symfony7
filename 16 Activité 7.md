@@ -12,4 +12,4 @@ Rien de mieux que la répétition pour solidifier vos connaissances.
 
 Je vous encourage à faire aussi l'api pour les catégories et les classifications.
 
-Continuer avec le [cours 10](<17 cours 10.md>).
+Continuer avec le [cours 10](<17 cours 10 - authentification.md>).

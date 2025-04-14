@@ -7,4 +7,4 @@ Pour vous entrainer, vous pourrez aussi faire une méthode pour retrouver les fi
 Puis vous pourrez factoriser ces trois méthodes en une seule, en passant en paramètre l'action que vous voudrez faire :)
 
 
-Continuer avec le [cours 5](<09 cours 5.md>).
+Continuer avec le [cours 5](<09 cours 5 - Formulaires.md>).

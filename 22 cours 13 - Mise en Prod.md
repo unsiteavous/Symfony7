@@ -180,3 +180,5 @@ ROUTE_PREFIX=/projet/symfony
 ```
 
 Et voilà, ça permet de tout gérer au même endroit, c'est à dire dans le `.env` ! Mieux !
+
+Continuer avec [le cours 14 (tests)](<23 cours 14 - Tests.md>).

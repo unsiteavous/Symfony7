@@ -49,3 +49,5 @@ Dans le fichier `config/packages/messenger.yaml`, commentez cette ligne :
 ```
 
 Et ça y est, vous pouvez envoyer des mails ! 
+
+Continuer avec le [cours 12 et les fixtures](<20 cours 12 - Fixtures.md>).

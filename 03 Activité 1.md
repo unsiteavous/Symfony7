@@ -75,4 +75,4 @@ Dans le fichier twig en question, copiez-collez ce code :
 
 Et les formulaires ? On verra ça bientôt ! 😉
 
-Rendez-vous pour la suite dans le [cours 3](<04 cours 3.md>).
+Rendez-vous pour la suite dans le [cours 3](<04 cours 3 - Doctrine.md>).

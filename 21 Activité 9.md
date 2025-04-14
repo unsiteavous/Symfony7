@@ -9,3 +9,5 @@
 4. Faites un fichier user, dans lequel vous ferez :
    1. un utilisateur en dur, avec votre email et un mot de passe que vous connaissez, pour pouvoir l'utiliser ensuite
    2. Une boucle de 10 utilisateurs fictifs construits avec faker.
+
+Poursuivre avec [la mise en prod](<22 cours 13 - Mise en Prod.md>).

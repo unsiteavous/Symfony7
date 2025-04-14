@@ -10,4 +10,4 @@ Modifiez la méthode de suppression, pour passer sur un DELETE (et pas un POST)
 
 Ajoutez les contraintes dans votre entité.
 
-Continuer avec le [cours 9](<15 cours 9.md>).
+Continuer avec le [cours 9](<15 cours 9 - Retours JSON.md>).

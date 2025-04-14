@@ -178,4 +178,4 @@ On peut faire trois sortes de réponses :
 
 Maintenant qu'on a une route qui marche, on veut afficher une vue. Allons voir dans le détail ce qu'apporte twig.
 
-C'est dans le [cours 2](<02 cours 2.md>) !
+C'est dans le [cours 2](<02 cours 2 - Découverte de twig.md>) !
