@@ -58,8 +58,7 @@ Créer un test qui :
 Pour lancer le test, il faut évidemment que phpunit soit installé. Si ce n'est pas le cas, il faut l'installer :
 
 ```
-composer require --dev phpunit/phpunit
-composer require --dev symfony/phpunit-bridge
+composer require --dev symfony/test-pack
 ```
 Les deux sont indispensables.
 

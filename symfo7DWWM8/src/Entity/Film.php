@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\FilmRepository;
+use App\Services\Slug;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
@@ -12,6 +13,8 @@ use Symfony\Component\Serializer\Annotation\Groups;
 #[ORM\Entity(repositoryClass: FilmRepository::class)]
 class Film
 {
+    use Slug;
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
@@ -46,6 +49,9 @@ class Film
     #[ORM\Column(type: Types::TIME_MUTABLE)]
     private ?\DateTimeInterface $duree = null;
 
+    #[ORM\Column(length: 255)]
+    private ?string $slug = null;
+
     public function __construct()
     {
         $this->categories = new ArrayCollection();
@@ -57,6 +63,12 @@ class Film
         return $this->id;
     }
 
+    public function setId(int $id): static
+    {
+        $this->id = $id;
+        return $this;
+    }
+
     public function getTitre(): ?string
     {
         return $this->titre;
@@ -65,7 +77,7 @@ class Film
     public function setTitre(string $titre): static
     {
         $this->titre = $titre;
-
+        $this->setSlug($titre);
         return $this;
     }
 
@@ -152,6 +164,18 @@ class Film
     public function setDuree(\DateTimeInterface $duree): static
     {
         $this->duree = $duree;
+
+        return $this;
+    }
+
+    public function getSlug(): ?string
+    {
+        return $this->slug;
+    }
+
+    public function setSlug(string $slug): static
+    {
+        $this->slug = $this->enslug($slug);
 
         return $this;
     }
