@@ -8,6 +8,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: FilmRepository::class)]
@@ -22,6 +23,7 @@ class Film
 
     #[ORM\Column(length: 50)]
     #[Groups(['api_category_index', 'api_film_new'])]
+    #[Assert\NotBlank()]
     private ?string $titre = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
@@ -29,6 +31,7 @@ class Film
     private ?\DateTimeInterface $dateSortie = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank()]
     #[Groups(['api_film_new'])]
     private ?string $affiche = null;
 
@@ -39,6 +42,7 @@ class Film
     private Collection $categories;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank()]
     #[Groups(['api_film_new'])]
     private ?string $lienTrailer = null;
 
@@ -52,9 +56,16 @@ class Film
     #[ORM\Column(length: 255)]
     private ?string $slug = null;
 
+    /**
+     * @var Collection<int, Seance>
+     */
+    #[ORM\OneToMany(targetEntity: Seance::class, mappedBy: 'film', orphanRemoval: true)]
+    private Collection $seances;
+
     public function __construct()
     {
         $this->categories = new ArrayCollection();
+        $this->seances = new ArrayCollection();
     }
 
 
@@ -176,6 +187,36 @@ class Film
     public function setSlug(string $slug): static
     {
         $this->slug = $this->enslug($slug);
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Seance>
+     */
+    public function getSeances(): Collection
+    {
+        return $this->seances;
+    }
+
+    public function addSeance(Seance $seance): static
+    {
+        if (!$this->seances->contains($seance)) {
+            $this->seances->add($seance);
+            $seance->setFilm($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSeance(Seance $seance): static
+    {
+        if ($this->seances->removeElement($seance)) {
+            // set the owning side to null (unless already changed)
+            if ($seance->getFilm() === $this) {
+                $seance->setFilm(null);
+            }
+        }
 
         return $this;
     }
