@@ -25,7 +25,7 @@ Pour travailler avec symfony 7 <ins>(cours 2024)</ins>, on va avoir plusieurs ch
 4. Installez **symfony CLI** : `scoop install symfony-cli`
 5. vérifiez que tout est ok : `symfony check:requirements`
 
-Et passez au [cours 1](<01 cours 1.md>) 😉
+Et passez au [cours 1](<01 cours 1 - Nouveau projet.md>) 😉
 
 
 # Reste à faire
