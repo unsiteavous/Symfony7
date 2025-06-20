@@ -9,7 +9,7 @@ Affichez tous les films dans une liste, avec leur titre.
 Sur chaque titre, on va vouloir mettre un lien, qui nous permettra de voir les infos d'un film en particulier.
 
 ## URL avec paramètre
-Comme on l'a vu dans le [cours 1](<01 cours 1.md>), on peut récupérer un paramètre dans l'url.
+Comme on l'a vu dans le [cours 1](<01 cours 1 - Nouveau projet.md>), on peut récupérer un paramètre dans l'url.
 
 Ça va nous être très utile pour créer des liens pour chaque film.
 

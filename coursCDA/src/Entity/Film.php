@@ -27,6 +27,22 @@ class Film
     #[ORM\ManyToMany(targetEntity: Category::class, inversedBy: 'films')]
     private Collection $categories;
 
+    #[ORM\Column(length: 255)]
+    private ?string $urlAffiche = null;
+
+    #[ORM\Column(length: 255)]
+    private ?string $urlTrailer = null;
+
+    #[ORM\Column(length: 255)]
+    private ?string $resume = null;
+
+    #[ORM\Column]
+    private ?\DateTimeImmutable $dateSortie = null;
+
+    #[ORM\ManyToOne(inversedBy: 'films')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Classification $classification = null;
+
     public function __construct()
     {
         $this->categories = new ArrayCollection();
@@ -81,6 +97,66 @@ class Film
     public function removeCategory(Category $Category): static
     {
         $this->categories->removeElement($Category);
+
+        return $this;
+    }
+
+    public function getUrlAffiche(): ?string
+    {
+        return $this->urlAffiche;
+    }
+
+    public function setUrlAffiche(string $urlAffiche): static
+    {
+        $this->urlAffiche = $urlAffiche;
+
+        return $this;
+    }
+
+    public function getUrlTrailer(): ?string
+    {
+        return $this->urlTrailer;
+    }
+
+    public function setUrlTrailer(string $urlTrailer): static
+    {
+        $this->urlTrailer = $urlTrailer;
+
+        return $this;
+    }
+
+    public function getResume(): ?string
+    {
+        return $this->resume;
+    }
+
+    public function setResume(string $resume): static
+    {
+        $this->resume = $resume;
+
+        return $this;
+    }
+
+    public function getDateSortie(): ?\DateTimeImmutable
+    {
+        return $this->dateSortie;
+    }
+
+    public function setDateSortie(\DateTimeImmutable $dateSortie): static
+    {
+        $this->dateSortie = $dateSortie;
+
+        return $this;
+    }
+
+    public function getClassification(): ?Classification
+    {
+        return $this->classification;
+    }
+
+    public function setClassification(?Classification $classification): static
+    {
+        $this->classification = $classification;
 
         return $this;
     }

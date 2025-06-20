@@ -6,8 +6,11 @@ use App\Repository\CategoryRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: CategoryRepository::class)]
+#[UniqueEntity(fields: ['name'], message: 'La catégorie existe déjà.')]
 class Category
 {
     #[ORM\Id]
@@ -15,7 +18,14 @@ class Category
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 50)]
+    #[ORM\Column(length: 50, unique: true)]
+    #[Assert\NotBlank(message: 'Le nom de la catégorie ne doit pas être vide.')]
+    #[Assert\Length(
+        min: 3,
+        max: 50,
+        minMessage: 'Le nom doit avoir au moins {{ limit }} caractères. Actuellement, il y a {{ value|length }}.',
+        maxMessage: 'Le nom doit avoir au plus {{ limit }} caractères. Actuellement, il y a {{ value|length }}.',
+    )]
     private ?string $name = null;
 
     /**
@@ -23,6 +33,15 @@ class Category
      */
     #[ORM\ManyToMany(targetEntity: Film::class, mappedBy: 'categories')]
     private Collection $films;
+
+    #[ORM\Column(length: 255)]
+    #[Assert\Length(
+        min: 3,
+        max: 50,
+        minMessage: 'Le nom doit avoir au moins {{ limit }} caractères. Actuellement, il y a {{ value|length }}.',
+        maxMessage: 'Le nom doit avoir au plus {{ limit }} caractères. Actuellement, il y a {{ value|length }}.',
+    )]
+    private ?string $description = null;
 
     public function __construct()
     {
@@ -69,6 +88,18 @@ class Category
         if ($this->films->removeElement($film)) {
             $film->removeCategory($this);
         }
+
+        return $this;
+    }
+
+    public function getDescription(): ?string
+    {
+        return $this->description;
+    }
+
+    public function setDescription(string $description): static
+    {
+        $this->description = $description;
 
         return $this;
     }
