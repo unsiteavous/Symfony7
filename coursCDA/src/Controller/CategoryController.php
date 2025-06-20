@@ -16,8 +16,7 @@ final class CategoryController extends AbstractController
 {
     public function __construct(
         private CategoryRepository $repo
-    )
-    {}
+    ) {}
 
     #[Route('/', name: 'index', methods: ['GET'])]
     public function index(): Response
@@ -46,7 +45,7 @@ final class CategoryController extends AbstractController
 
         $form->handleRequest($request);
 
-        if($form->isSubmitted() && $form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid()) {
             $category = $form->getData();
 
             $em->persist($category);
@@ -60,4 +59,38 @@ final class CategoryController extends AbstractController
         ]);
     }
 
+    #[Route('/{id}/edit', name: 'edit', methods: ['GET', 'POST'], requirements: ['id' => '\d+'])]
+    public function edit(?Category $category, Request $request, EntityManagerInterface $em): Response
+    {
+        if (!$category) {
+            return $this->redirectToRoute('app_category_index');
+        }
+
+        $form = $this->createForm(CategoryType::class, $category);
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $em->persist($category);
+            $em->flush();
+
+            return $this->redirectToRoute('app_category_index');
+        }
+
+        return $this->render('category/edit.html.twig', [
+            'form' => $form,
+            'category' => $category
+        ]);
+    }
+
+    #[Route('/{id}/delete', name: 'delete', methods: ['GET'], requirements: ['id' => '\d+'])]
+    public function delete(?Category $category, EntityManagerInterface $em): Response
+    {
+        if ($category) {
+            $em->remove($category);
+            $em->flush();
+        }
+
+        return $this->redirectToRoute('app_category_index');
+    }
 }
