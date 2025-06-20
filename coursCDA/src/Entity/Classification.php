@@ -6,7 +6,10 @@ use App\Repository\ClassificationRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Validator\Constraints as Assert;
 
+#[UniqueEntity(fields: ['name'], message: 'Ce nom est déjà utilisé.')]
 #[ORM\Entity(repositoryClass: ClassificationRepository::class)]
 class Classification
 {
@@ -16,9 +19,12 @@ class Classification
     private ?int $id = null;
 
     #[ORM\Column(length: 50)]
+    #[Assert\NotBlank(message: 'Le nom est obligatoire')]
+    #[Assert\Length(min: 2, max: 50, minMessage: 'Le nom doit avoir au moins {{ limit }} caractères', maxMessage: 'Le nom ne doit pas avoir plus de {{ limit }} caractères')]
     private ?string $name = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank(message: 'La description est obligatoire')]
     private ?string $description = null;
 
     /**

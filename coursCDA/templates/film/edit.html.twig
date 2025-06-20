@@ -1,0 +1,15 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit Film
+{% endblock %}
+
+{% block body %}
+	<h1>Edit Film</h1>
+
+	{{ form(form) }}
+
+
+		<a href="{{ path('app_film_index') }}">back to list</a>
+
+		{{ include('film/_delete_form.html.twig') }}
+{% endblock %}

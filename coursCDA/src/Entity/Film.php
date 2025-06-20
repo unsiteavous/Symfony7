@@ -6,6 +6,7 @@ use App\Repository\FilmRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: FilmRepository::class)]
 class Film
@@ -16,9 +17,11 @@ class Film
     private ?int $id = null;
 
     #[ORM\Column(length: 50)]
+    #[Assert\NotBlank(message:"Le titre ne peut pas être vide")]
     private ?string $name = null;
 
     #[ORM\Column]
+    #[Assert\NotBlank(message:"La durée ne peut pas être vide")]
     private ?\DateTimeImmutable $duration = null;
 
     /**
@@ -28,19 +31,24 @@ class Film
     private Collection $categories;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank(message:"L'url de l'affiche ne peut pas être vide")]
     private ?string $urlAffiche = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank(message:"L'url du trailer ne peut pas être vide")]
     private ?string $urlTrailer = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank(message:"Le résumé ne peut pas être vide")]
     private ?string $resume = null;
 
     #[ORM\Column]
+    #[Assert\NotBlank(message:"La date de sortie ne peut pas être vide")]
     private ?\DateTimeImmutable $dateSortie = null;
 
     #[ORM\ManyToOne(inversedBy: 'films')]
     #[ORM\JoinColumn(nullable: false)]
+    #[Assert\NotBlank(message:"La classification ne peut pas être vide")]
     private ?Classification $classification = null;
 
     public function __construct()
