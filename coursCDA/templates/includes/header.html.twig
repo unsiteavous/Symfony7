@@ -23,6 +23,9 @@
 				<a href="{{ url('app_twig') }}">Activité twig</a>
 			{% endif %}
 
+            <a href="{{ path('app_category_index') }}">Catégories</a>
+            <a href="{{ path('app_classification_index') }}">Classifications</a>
+
             {% if app.user %}
                 <a href="{{ path('app_logout') }}">Déconnexion</a>
             {% else %}
