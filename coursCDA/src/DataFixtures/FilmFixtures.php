@@ -14,7 +14,10 @@ class FilmFixtures extends AbstractFixtures
     {
         for ($i = 0; $i < 10; $i++) {
             $film = (new Film)
-                ->setName($this->faker->words(3, true))
+                ->setName($this->faker->words(3, true));
+
+            $film
+                ->setSlug($this->slugger->slug($film->getName(), '-', 'fr'))
                 ->setDuration(DateTimeImmutable::createFromFormat("H:i:s", "1:56:30"))
                 ->setUrlAffiche($this->faker->imageUrl())
                 ->setUrlTrailer($this->faker->url())

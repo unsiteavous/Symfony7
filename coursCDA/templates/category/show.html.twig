@@ -27,7 +27,7 @@
 		<ul>
 			{% for film in category.films %}
 				<li>
-					<a href="{{ path('app_film_show', {'id': film.id}) }}">{{ film.name }}</a>
+					<a href="{{ path('app_film_show', {'slug': film.slug}) }}">{{ film.name }}</a>
 				</li>
 			{% endfor %}
 		</ul>

@@ -51,6 +51,9 @@ class Film
     #[Assert\NotBlank(message:"La classification ne peut pas être vide")]
     private ?Classification $classification = null;
 
+    #[ORM\Column(length: 50, unique: true)]
+    private ?string $slug = null;
+
     public function __construct()
     {
         $this->categories = new ArrayCollection();
@@ -165,6 +168,18 @@ class Film
     public function setClassification(?Classification $classification): static
     {
         $this->classification = $classification;
+
+        return $this;
+    }
+
+    public function getSlug(): ?string
+    {
+        return $this->slug;
+    }
+
+    public function setSlug(string $slug): static
+    {
+        $this->slug = $slug;
 
         return $this;
     }

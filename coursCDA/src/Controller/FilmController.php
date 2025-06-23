@@ -10,6 +10,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\String\Slugger\SluggerInterface;
 
 #[Route('/film', name: 'app_film_')]
 final class FilmController extends AbstractController
@@ -23,13 +24,14 @@ final class FilmController extends AbstractController
     }
 
     #[Route('/new', name: 'new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $entityManager): Response
+    public function new(Request $request, EntityManagerInterface $entityManager, SluggerInterface $slugger): Response
     {
         $form = $this->createForm(FilmForm::class);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $film = $form->getData();
+            $film->setSlug($slugger->slug($film->getNom(), '-', 'fr'));
             $entityManager->persist($film);
             $entityManager->flush();
 
@@ -41,9 +43,14 @@ final class FilmController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'show', methods: ['GET'])]
-    public function show(Film $film): Response
+    #[Route('/{slug}', name: 'show', methods: ['GET'])]
+    public function show(?String $slug, FilmRepository $filmRepository): Response
     {
+        if (!$slug) {
+            return $this->redirectToRoute('app_film_index');
+        }
+        $film = $filmRepository->findOneBy(['slug' => $slug]);
+        
         return $this->render('film/show.html.twig', [
             'film' => $film,
         ]);
