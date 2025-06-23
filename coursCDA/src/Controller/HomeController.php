@@ -2,10 +2,13 @@
 
 namespace App\Controller;
 
+use LDAP\Result;
 use stdClass;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Mime\Email;
 use Symfony\Component\Routing\Attribute\Route;
 
 #[Route(path: '/', name: 'app_')]
@@ -42,5 +45,20 @@ final class HomeController extends AbstractController
         return $this->render('home/twig.html.twig', [
             'user' => $user,
         ]);
+    }
+
+    #[Route(path: 'email', name: 'email', methods: ['GET'])]
+    public function email(MailerInterface $mailer): Response
+    {
+        $email = (new Email())
+            ->from('automate@unsiteavous.fr')
+            ->to('contact@unsiteavous.fr')
+            ->subject('Contact Unsiteavous.fr')
+            ->text('format texte Contact Unsiteavous.fr')
+            ->html('<p>See Twig integration for better HTML integration!</p>');
+
+        $mailer->send($email);
+
+        return new Response('Email envoyé !');
     }
 }
