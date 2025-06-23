@@ -26,6 +26,10 @@ MAILER_DSN=smtp://adresseMail:mot%20De%20Passe%20Application@smtp.gmail.com:587
 ###< symfony/mailer ###
 ```
 
+### Définir un mot de passe d'application dans Google :
+[📜 Documentation](https://support.google.com/accounts/answer/185833?sjid=14123049008653734251-EU)
+[Lien de l'endroit dans google](https://myaccount.google.com/apppasswords)
+
 >### Vous avez configuré sendmail et votre `php.ini` sur votre ordinateur :
 >
 > ```yaml
