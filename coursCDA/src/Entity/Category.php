@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: CategoryRepository::class)]
@@ -16,6 +17,7 @@ class Category
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['api_category_show'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 50, unique: true)]
@@ -26,12 +28,14 @@ class Category
         minMessage: 'Le nom doit avoir au moins {{ limit }} caractères. Actuellement, il y a {{ value|length }}.',
         maxMessage: 'Le nom doit avoir au plus {{ limit }} caractères. Actuellement, il y a {{ value|length }}.',
     )]
+    #[Groups(['api_category_index', 'api_category_new', 'api_category_show'])]
     private ?string $name = null;
 
     /**
      * @var Collection<int, Film>
      */
     #[ORM\ManyToMany(targetEntity: Film::class, mappedBy: 'categories')]
+    #[Groups('api_category_show')]
     private Collection $films;
 
     #[ORM\Column(length: 255)]
@@ -41,9 +45,11 @@ class Category
         minMessage: 'Le nom doit avoir au moins {{ limit }} caractères. Actuellement, il y a {{ value|length }}.',
         maxMessage: 'Le nom doit avoir au plus {{ limit }} caractères. Actuellement, il y a {{ value|length }}.',
     )]
+    #[Groups(['api_category_new', 'api_category_show'])]
     private ?string $description = null;
 
     #[ORM\Column(length: 50, unique: true)]
+    #[Groups(['api_category_index','api_category_show'])]
     private ?string $slug = null;
 
     public function __construct(

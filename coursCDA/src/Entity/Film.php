@@ -6,6 +6,7 @@ use App\Repository\FilmRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: FilmRepository::class)]
@@ -18,6 +19,7 @@ class Film
 
     #[ORM\Column(length: 50)]
     #[Assert\NotBlank(message:"Le titre ne peut pas être vide")]
+    #[Groups(['api_category_show'])]
     private ?string $name = null;
 
     #[ORM\Column]
@@ -52,6 +54,7 @@ class Film
     private ?Classification $classification = null;
 
     #[ORM\Column(length: 50, unique: true)]
+    #[Groups(['api_category_show'])]
     private ?string $slug = null;
 
     public function __construct()
