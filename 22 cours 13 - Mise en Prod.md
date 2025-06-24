@@ -1,4 +1,4 @@
-# Mise en production
+# Cours 13 : Mise en production
 Dans une idée de déploiement continu, il est souhaitable de faire des mises en production régulièrement.
 
 La première chose à laquelle on va se confronter, c'est la capacité à appeler l'API depuis ailleurs que ce serveur. Quand on travaille avec postman, on a l'impression que tout fonctionne, mais c'est une illusion. Postman fait des appels api qui sont passés comme s'ils venaient d'un serveur, et pas d'un front. Cela change beaucoup de choses. Et donc lorsqu'on essaie de faire un fetch depuis JS, on s'aperçoit que les requêtes sont bloquées à cause des CORS.

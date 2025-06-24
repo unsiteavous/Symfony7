@@ -1,4 +1,4 @@
-# Doctrine
+# Cours 3 : Doctrine
 On a des routes, des controllers, des vues. Mais comment intéragissons-nous avec la base de données ?
 
 Pour cela, symfony utilise un ORM (objet relational mapping), c'est-à-dire un objet qui va se positionner entre notre code et la base de données. C'est lui qui va contacter la base de données pour nous.

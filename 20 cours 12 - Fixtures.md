@@ -1,4 +1,4 @@
-# Cours 11 : Fixtures
+# Cours 12 : Fixtures
 
 Lorsque nous travaillons sur un projet qui nécessite d'avoir des données d'exemple, pour pouvoir voir si nos routes marchent, si on affiche correctement les données, remplir les tableaux, ... Nous avons deux choix : Soit nous remplissons notre BDD à la main, soit on utilise les fixtures.
 

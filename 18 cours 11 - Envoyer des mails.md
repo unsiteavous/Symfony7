@@ -1,4 +1,4 @@
-# Envoyer des mails
+# Cours 11 : Envoyer des mails
 Avec Symfony, on a déjà toute une série de choses installées pour nous permettre d'envoyer des mails. Lorsqu'on a choisi, lors de la création d'un utilisateur, que nous allions envoyer un mail de confirmation, on a eu une erreur, parce que nous n'avinos pas modifié notre `.env`.
 
 ## `.env`

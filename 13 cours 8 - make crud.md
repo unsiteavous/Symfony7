@@ -1,4 +1,4 @@
-# Fabrication du CRUD
+# Cours 8 : Fabrication du CRUD
 Nous avons vu jusque là différentes commandes qui nous permettaient de construire le CRUD, avec un peu de code à la main au milieu, pour faire toutes les routes, les méthodes, les vues, ...
 
 ## Rappels
