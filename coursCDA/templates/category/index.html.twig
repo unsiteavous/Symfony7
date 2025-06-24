@@ -31,9 +31,9 @@
 					<tr>
 						<td>{{ category.name }}</td>
 						<td>
-							<a href="{{ path('app_category_show', {'id': category.id}) }}">voir</a>
-                            <a href="{{ path('app_category_edit', {'id': category.id}) }}">modifier</a>
-                            <a href="{{ path('app_category_delete', {'id': category.id}) }}" onclick="if(!confirm('Are you sure?')) event.preventDefault()">Supprimer</a>
+							<a href="{{ path('app_category_show', {'slug': category.slug}) }}">voir</a>
+                            <a href="{{ path('app_category_edit', {'slug': category.slug}) }}">modifier</a>
+                            <a href="{{ path('app_category_delete', {'slug': category.slug}) }}" onclick="if(!confirm('Are you sure?')) event.preventDefault()">Supprimer</a>
 						</td>
 					</tr>
 				{% endfor %}

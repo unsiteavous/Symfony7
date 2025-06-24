@@ -10,6 +10,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\String\Slugger\SluggerInterface;
 
 #[Route('/film', name: 'app_film_')]
@@ -50,13 +51,14 @@ final class FilmController extends AbstractController
             return $this->redirectToRoute('app_film_index');
         }
         $film = $filmRepository->findOneBy(['slug' => $slug]);
-        
+
         return $this->render('film/show.html.twig', [
             'film' => $film,
         ]);
     }
 
     #[Route('/{id}/edit', name: 'edit', methods: ['GET', 'POST'])]
+    #[IsGranted('ROLE_USER')]
     public function edit(Request $request, Film $film, EntityManagerInterface $entityManager): Response
     {
         $form = $this->createForm(FilmForm::class, $film);

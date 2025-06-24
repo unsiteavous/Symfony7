@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Category;
 use App\Form\CategoryType;
 use App\Repository\CategoryRepository;
+use App\Service\SluggerService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -27,9 +28,10 @@ final class CategoryController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'show', methods: ['GET'], requirements: ['id' => '\d+'])]
-    public function show(?Category $category): Response
+    #[Route('/{slug}', name: 'show', methods: ['GET'])]
+    public function show(?string $slug): Response
     {
+        $category = $this->repo->findOneBy(['slug' => $slug]);
         if (!$category) {
             return $this->redirectToRoute('app_category_index');
         }
@@ -38,8 +40,8 @@ final class CategoryController extends AbstractController
         ]);
     }
 
-    #[Route('/new', name: 'new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $em): Response
+    #[Route('/new', name: 'new', methods: ['GET', 'POST'], priority: 10)]
+    public function new(Request $request, EntityManagerInterface $em, SluggerService $slugger): Response
     {
         $form = $this->createForm(CategoryType::class);
 
@@ -47,7 +49,7 @@ final class CategoryController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $category = $form->getData();
-
+            $category->setSlug($slugger->slug($category->getName(), Category::class));
             $em->persist($category);
             $em->flush();
 
@@ -59,9 +61,10 @@ final class CategoryController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}/edit', name: 'edit', methods: ['GET', 'POST'], requirements: ['id' => '\d+'])]
-    public function edit(?Category $category, Request $request, EntityManagerInterface $em): Response
+    #[Route('/{slug}/edit', name: 'edit', methods: ['GET', 'POST'])]
+    public function edit(?string $slug, Request $request, EntityManagerInterface $em, SluggerService $slugger): Response
     {
+        $category = $this->repo->findOneBy(['slug' => $slug]);
         if (!$category) {
             return $this->redirectToRoute('app_category_index');
         }
@@ -72,6 +75,7 @@ final class CategoryController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
 
+            $category->setSlug($slugger->slug($category->getName(), Category::class));
             $em->flush();
 
             return $this->redirectToRoute('app_category_index');
@@ -83,9 +87,10 @@ final class CategoryController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}/delete', name: 'delete', methods: ['GET'], requirements: ['id' => '\d+'])]
-    public function delete(?Category $category, EntityManagerInterface $em): Response
+    #[Route('/{slug}/delete', name: 'delete', methods: ['GET'])]
+    public function delete(?string $slug, EntityManagerInterface $em): Response
     {
+        $category = $this->repo->findOneBy(['slug' => $slug]);
         if ($category) {
             $em->remove($category);
             $em->flush();

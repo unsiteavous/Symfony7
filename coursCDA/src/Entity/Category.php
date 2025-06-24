@@ -43,8 +43,11 @@ class Category
     )]
     private ?string $description = null;
 
-    public function __construct()
-    {
+    #[ORM\Column(length: 50, unique: true)]
+    private ?string $slug = null;
+
+    public function __construct(
+    ) {
         $this->films = new ArrayCollection();
     }
 
@@ -60,8 +63,8 @@ class Category
 
     public function setName(string $name): static
     {
-        $this->name = $name;
-
+        $this->name = ucfirst(strtolower($name));
+        $this->setSlug($this->name);
         return $this;
     }
 
@@ -103,4 +106,17 @@ class Category
 
         return $this;
     }
+
+    public function getSlug(): ?string
+    {
+        return $this->slug;
+    }
+
+    public function setSlug(string $slug): static
+    {
+        $this->slug = $slug;
+        return $this;
+    }
+
+
 }
