@@ -11,6 +11,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 #[Route('/api', name: 'api_category_')]
 final class CategoryController extends AbstractController{
@@ -23,6 +24,7 @@ final class CategoryController extends AbstractController{
     }
 
     #[Route('/category/new', name: 'new', methods: ['POST'])]
+    #[IsGranted('ROLE_ADMIN')]
     public function new(Request $request, SerializerInterface $serializer, ValidatorInterface $validator, EntityManagerInterface $entityManager): Response
     {
         $category = $serializer->deserialize($request->getContent(), Category::class, 'json', ['groups' => ['api_category_new']]);

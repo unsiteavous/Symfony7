@@ -20,7 +20,7 @@ class CategoryType extends AbstractType
                 'label' => 'Nom :',
                 'attr' => [
                     'placeholder' => 'Nom de la catégorie',
-                    'id' => ''
+                    'id' => '',
                 ]
             ])
             ->add('Enregistrer', SubmitType::class)
