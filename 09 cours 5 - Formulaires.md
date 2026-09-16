@@ -124,8 +124,8 @@ public function update(Film $film, Request $request): Response
       // Suite du traitement.
   }
 
-  // Affichage de la vue par défaut :
-  return $this->render('film/edit.html.twig', ['film'=> $film,'form'=> $form]);
+  // Affichage de la vue par défaut, et renvoi du code de réponse correspondant :
+  return $this->render('film/edit.html.twig', ['film'=> $film,'form'=> $form], new Response(status: $form->isSubmitted() ? Response::HTTP_UNPROCESSABLE_ENTITY : Response::HTTP_OK));
 }
 ```
 
