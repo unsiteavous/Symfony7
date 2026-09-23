@@ -19,6 +19,13 @@
         {% endif %}
     </head>
     <body>
+        <header>
+            {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
+                <a href="{{ path('app_logout') }}">Logout</a>
+            {% else %}
+                <a href="{{ path('app_login') }}">Login</a>
+            {% endif %}
+        </header>
         {% block body %}{% endblock %}
     </body>
 </html>

@@ -25,7 +25,7 @@ class Chaussure
         minMessage: 'Le nom de la chaussure doit contenir au moins {{ limit }} caractères.',
         maxMessage: 'Le nom de la chaussure ne peut pas dépasser {{ limit }} caractères.'
     )]
-    #[Groups(['chaussure:list', 'api_chaussure_new'])]
+    #[Groups(['chaussure:list', 'api_chaussure_new', 'api_chaussure_create'])]
     private ?string $name = null;
 
     /**

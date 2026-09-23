@@ -11,9 +11,10 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
-#[Route('/api/chaussure', name: 'app_chaussure_')]
+#[Route('/api/chaussure', name: 'api_chaussure_')]
 final class ChaussureController extends AbstractController
 {
     #[Route('s/', name: 'index')]
@@ -24,11 +25,13 @@ final class ChaussureController extends AbstractController
     }
 
     #[Route('/create', name: 'create', methods: ['POST'])]
-    public function create(Request $request, EntityManagerInterface $em, TailleRepository $tailleRepository, ValidatorInterface $validator): Response
+    public function create(Request $request, EntityManagerInterface $em, TailleRepository $tailleRepository, ValidatorInterface $validator, SerializerInterface $serializer): Response
     {
         $data = json_decode($request->getContent(), true);
 
-        $chaussure = new Chaussure();
+        $chaussure = $serializer->deserialize($request->getContent(), Chaussure::class, 'json', [
+            "groups" => "api_chaussure_create",
+        ]);
         $chaussure->setName(htmlspecialchars($data['name']) ?? null);
 
         // On récupère les tailles existantes en base plutôt que de laisser

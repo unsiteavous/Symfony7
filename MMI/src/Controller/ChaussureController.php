@@ -10,11 +10,12 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
-#[Route('/chaussure', name: 'app_chaussure_')]
+#[Route('/', name: 'app_chaussure_')]
 final class ChaussureController extends AbstractController
 {
-    #[Route('s/', name: 'index')]
+    #[Route('', name: 'index')]
     public function index(ChaussureRepository $chaussureRepository): Response
     {
         $chaussures = $chaussureRepository->findAll();
@@ -23,14 +24,8 @@ final class ChaussureController extends AbstractController
         ]);
     }
 
-        #[Route('s/json', name: 'indexjson')]
-    public function indexjson(ChaussureRepository $chaussureRepository): Response
-    {
-        $chaussures = $chaussureRepository->findAll();
-        return $this->json($chaussures, 200, [], ['groups' => ['chaussure:list']]);
-    }
-
-    #[Route('/create', name: 'create', methods: ['GET', 'POST'])]
+    #[Route('chaussure/create', name: 'create', methods: ['GET', 'POST'])]
+    #[IsGranted('ROLE_ADMIN', statusCode: 423, message: "Vous n'avez pas les droits pour accéder à cette page")]
     public function create(Request $request, EntityManagerInterface $entityManager): Response
     {
         $form = $this->createForm(CreateChaussureType::class);
@@ -49,7 +44,7 @@ final class ChaussureController extends AbstractController
         ], new Response(status: $form->isSubmitted() ? Response::HTTP_UNPROCESSABLE_ENTITY : Response::HTTP_OK));
     }
 
-    #[Route('/{id}', name: 'show', methods: ['GET'])]
+    #[Route('chaussure/{id}', name: 'show', methods: ['GET'])]
     public function show(?Chaussure $chaussure): Response
     {
         if (!$chaussure) {
@@ -60,7 +55,7 @@ final class ChaussureController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}/update', name: 'update', methods: ['GET', 'POST'])]
+    #[Route('chaussure/{id}/update', name: 'update', methods: ['GET', 'POST'])]
     public function update(?Chaussure $chaussure, Request $request, EntityManagerInterface $entityManager): Response
     {
         if (!$chaussure) {
@@ -82,7 +77,7 @@ final class ChaussureController extends AbstractController
         ], new Response(status: $form->isSubmitted() ? Response::HTTP_UNPROCESSABLE_ENTITY : Response::HTTP_OK));
     }
 
-    #[Route('/{id}/delete', name: 'delete', methods: ['DELETE'])]
+    #[Route('chaussure/{id}/delete', name: 'delete', methods: ['DELETE'])]
     public function delete(Chaussure $chaussure, EntityManagerInterface $entityManager): Response
     {
     if(!$chaussure) {
