@@ -48,7 +48,7 @@ Il y a plusieurs manières de gérer les routes. Il ne faut pas oublier que symf
 
 À la place, je préfère utiliser `isGranted`.
  
-[📜 Documentation Symfony isGrandted (vieux)](https://symfony.com/bundles/SensioFrameworkExtraBundle/current/annotations/security.html#isgranted) 
+[📜 Documentation Symfony isGranted (vieux)](https://symfony.com/bundles/SensioFrameworkExtraBundle/current/annotations/security.html#isgranted) 
 [📜 Documentation Symfony (nouveau)](https://symfony.com/doc/current/security.html#security-securing-controller-attributes)  
 [📜 Documentation SymfonyCast](https://symfonycasts.com/screencast/symfony-security/is-auth)
 
@@ -83,6 +83,22 @@ Cette annotation permettra de savoir quel rôle peut accéder à quelle partie d
 |*IMPORT* | Autorisation accordée pour importer des données.|
 
 *En gras, les plus utiles, en italique, les spécifiques à des actions du CRUD.*
+
+## Utilisation
+On va pouvoir mettre des conditions d'accès à différents endroits : Dans le fichier `config/packages/security.yaml`, pour un blocage sur un ensemble de routes, directement dans un controller pour des restrictions plus fines, ou encore directement dans le template, pour cacher un bouton par exemple.
+
+### Dans le fichier `config/packages/security.yaml`
+
+```yaml
+security:
+    access_control:
+        - {path: '/login', roles: ['PUBLIC_ACCESS']}
+        - {path: '/register', roles: ['PUBLIC_ACCESS']}
+        - {path: '/profile', roles: ['ROLE_USER']}
+        - {path: '/admin', roles: ['ROLE_ADMIN']}
+```
+
+### Dans un controller
 
 voici tout ce qu'on peut dire à `isGranted` :
 ```php
