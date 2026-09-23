@@ -1,0 +1,14 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Modifier {{ chaussure.name }}{% endblock %}
+
+{% block body %}
+    <h1> {{ chaussure.name }}</h1>
+    <a href="{{ path('app_chaussure_update', {'id': chaussure.id}) }}">modifier</a>
+    <form action="{{ path('app_chaussure_delete', {'id': chaussure.id}) }}" method="POST">
+        <input type="hidden" name="_method" value="DELETE">
+        <button type="submit">supprimer</button>
+    </form>
+    <ul>
+        <li>Nom : {{ chaussure.name }}</li>
+{% endblock %}

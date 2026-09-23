@@ -6,6 +6,7 @@ use App\Repository\TailleRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Attribute\Groups;
 
 #[ORM\Entity(repositoryClass: TailleRepository::class)]
 class Taille
@@ -13,15 +14,18 @@ class Taille
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['taille:list'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 15)]
+    #[Groups(['chaussure:list','taille:list'])]
     private ?string $intitule = null;
 
     /**
      * @var Collection<int, Chaussure>
      */
     #[ORM\ManyToMany(targetEntity: Chaussure::class, mappedBy: 'taille')]
+    #[Groups(['taille:list'])]
     private Collection $chaussures;
 
     public function __construct()

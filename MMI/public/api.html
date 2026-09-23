@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>test API</title>
+</head>
+
+<body>
+
+    <h1>Formulaire de soumission</h1>
+    <form id="form-chaussure">
+        <input type="text" name="name" placeholder="Nom de la chaussure" required minlength="2" maxlength="50">
+        <select name="tailles" id="tailles" multiple></select>
+        <button type="submit">Envoyer</button>
+    </form>
+
+    <p id="feedback"></p>
+
+    <script>
+        const select = document.getElementById('tailles')
+        const form = document.getElementById('form-chaussure')
+        const feedback = document.getElementById('feedback')
+
+        // Charge la liste des tailles disponibles et alimente le <select>
+        async function chargerTailles() {
+            const response = await fetch('/api/tailles/')
+            const tailles = await response.json()
+
+            tailles.forEach(taille => {
+                const option = document.createElement('option')
+                option.value = taille.id
+                option.textContent = taille.intitule
+                select.appendChild(option)
+            })
+        }
+
+        // Construit le payload et envoie la création de la chaussure à l'API
+        async function creerChaussure(event) {
+            event.preventDefault()
+            feedback.textContent = ''
+
+            const formData = new FormData(form)
+            const tailleIds = Array.from(select.selectedOptions).map(option => Number(option.value))
+
+            const payload = {
+                name: formData.get('name'),
+                taille: tailleIds,
+            }
+
+            const response = await fetch('/api/chaussure/create', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(payload),
+            })
+
+            const data = await response.json()
+
+            if (!response.ok) {
+                feedback.textContent = Array.isArray(data) ? data.join(', ') : 'Une erreur est survenue.'
+                return
+            }
+
+            feedback.textContent = `La paire de chaussure a été créée avec succès.`
+            form.reset()
+        }
+
+        form.addEventListener('submit', creerChaussure)
+        chargerTailles()
+    </script>
+</body>
+
+</html>

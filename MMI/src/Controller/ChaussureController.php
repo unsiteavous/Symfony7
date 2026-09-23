@@ -23,6 +23,13 @@ final class ChaussureController extends AbstractController
         ]);
     }
 
+        #[Route('s/json', name: 'indexjson')]
+    public function indexjson(ChaussureRepository $chaussureRepository): Response
+    {
+        $chaussures = $chaussureRepository->findAll();
+        return $this->json($chaussures, 200, [], ['groups' => ['chaussure:list']]);
+    }
+
     #[Route('/create', name: 'create', methods: ['GET', 'POST'])]
     public function create(Request $request, EntityManagerInterface $entityManager): Response
     {
@@ -40,5 +47,50 @@ final class ChaussureController extends AbstractController
         return $this->render('chaussure/create.html.twig', [
             'form' => $form->createView()
         ], new Response(status: $form->isSubmitted() ? Response::HTTP_UNPROCESSABLE_ENTITY : Response::HTTP_OK));
+    }
+
+    #[Route('/{id}', name: 'show', methods: ['GET'])]
+    public function show(?Chaussure $chaussure): Response
+    {
+        if (!$chaussure) {
+            return $this->redirectToRoute('app_chaussure_index');
+        }
+        return $this->render('chaussure/show.html.twig', [
+            'chaussure' => $chaussure
+        ]);
+    }
+
+    #[Route('/{id}/update', name: 'update', methods: ['GET', 'POST'])]
+    public function update(?Chaussure $chaussure, Request $request, EntityManagerInterface $entityManager): Response
+    {
+        if (!$chaussure) {
+            return $this->redirectToRoute('app_chaussure_index');
+        }
+        $form = $this->createForm(CreateChaussureType::class, $chaussure);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $chaussure = $form->getData();
+            $entityManager->flush();
+
+            return $this->redirectToRoute('app_chaussure_index');
+        }
+
+        return $this->render('chaussure/update.html.twig', [
+            'chaussure' => $chaussure,
+            'form' => $form->createView()
+        ], new Response(status: $form->isSubmitted() ? Response::HTTP_UNPROCESSABLE_ENTITY : Response::HTTP_OK));
+    }
+
+    #[Route('/{id}/delete', name: 'delete', methods: ['DELETE'])]
+    public function delete(Chaussure $chaussure, EntityManagerInterface $entityManager): Response
+    {
+    if(!$chaussure) {
+        return $this->redirectToRoute('app_chaussure_index');
+    }
+        $entityManager->remove($chaussure);
+        $entityManager->flush();
+        $this->addFlash('success', 'La chaussure a été supprimée');
+        return $this->redirectToRoute('app_chaussure_index');
     }
 }
