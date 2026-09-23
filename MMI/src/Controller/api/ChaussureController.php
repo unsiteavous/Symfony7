@@ -29,7 +29,7 @@ final class ChaussureController extends AbstractController
         $data = json_decode($request->getContent(), true);
 
         $chaussure = new Chaussure();
-        $chaussure->setName($data['name'] ?? null);
+        $chaussure->setName(htmlspecialchars($data['name']) ?? null);
 
         // On récupère les tailles existantes en base plutôt que de laisser
         // le serializer en recréer de nouvelles instances détachées.
