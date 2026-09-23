@@ -101,7 +101,7 @@ voilà comment ça va se traduire dans la méthode :
 
 ```php
 
-use App\Entity\Film;
+use App\Entity\Categorie;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -115,11 +115,11 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
   public function new(Request $request, EntityManagerInterface $em, SerializerInterface $serializer, UrlGeneratorInterface $urlGenerator, ValidatorInterface $validator)
   {
     // On commence par récupérer les données grâce à $request()->getContent()
-    // Ensuite, on deserialize le json, pour recomposer un objet film, en ne remplissant que les champs autorisés par le groupe :
-    $film = $serializer->deserialize($request->getContent(), Film::class,'json', ["groups" => "api_film_index"]);
+    // Ensuite, on deserialize le json, pour recomposer un objet categorie, en ne remplissant que les champs autorisés par le groupe :
+    $categorie = $serializer->deserialize($request->getContent(), Categorie::class,'json', ["groups" => "api_categorie_index"]);
 
     // On valide les données reçues :
-    $errors = $validator->validate($film);
+    $errors = $validator->validate($categorie);
 
     // S'il y a des erreurs, on s'arrête là et on retourne les erreurs à l'envoyeur :
     if ($errors->count()) {
@@ -131,21 +131,21 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
     }else {
 
       // Sinon on enregistre en base de données :
-      $em->persist($film);
+      $em->persist($categorie);
       $em->flush();
       
       // Si tout s'est bien passé on veut permettre au front de rediriger l'utilisateur sur la bonne page.
       // On va donc lui donner une url.
-      $url = $urlGenerator->generate('app_films_show', ['id' => $film->getId()], UrlGeneratorInterface::ABSOLUTE_URL);
+      $url = $urlGenerator->generate('app_categories_show', ['id' => $categorie->getId()], UrlGeneratorInterface::ABSOLUTE_URL);
       
-      return $this->json($film, Response::HTTP_CREATED, ['Location' => $url]);
+      return $this->json($categorie, Response::HTTP_CREATED, ['Location' => $url]);
       
     }
 
   }
   ```
 
-  Si on fait un test avec [postman](https://www.postman.com/downloads/), on voit que si on donne un mauvais film, on a bien une erreur qui est levée, si on donne un film correctement, il est enregistré.
+  Si on fait un test avec [postman](https://www.postman.com/downloads/), on voit que si on donne une mauvaise catégorie, on a bien une erreur qui est levée, si on donne une catégorie correctement, elle est enregistrée.
 
   ## Pour aller plus loin... Factoriser le code
 
@@ -153,7 +153,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 ```php
 
-use App\Entity\Film;
+use App\Entity\Categorie;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -165,27 +165,86 @@ use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
 
     #[MapRequestPayload(
       serializationContext: [
-        'groups' => ['app_films_new']
+        'groups' => ['app_categories_new']
       ]
     )]
-    Film $film,
+    Categorie $categorie,
     EntityManagerInterface $em,
     UrlGeneratorInterface $urlGenerator
   ) {
 
     // Sinon on enregistre en base de données :
-    $em->persist($film);
+    $em->persist($categorie);
     $em->flush();
 
     // Si tout s'est bien passé on veut permettre au front de rediriger l'utilisateur sur la bonne page.
     // On va donc lui donner une url.
-    $url = $urlGenerator->generate('app_films_show', ['id' => $film->getId()], UrlGeneratorInterface::ABSOLUTE_URL);
+    $url = $urlGenerator->generate('app_categories_show', ['id' => $categorie->getId()], UrlGeneratorInterface::ABSOLUTE_URL);
 
-    return $this->json($film, Response::HTTP_CREATED, ['Location' => $url]);
+    return $this->json($categorie, Response::HTTP_CREATED, ['Location' => $url]);
   }
   ```
 
 On ne peut pas utiliser l'injection de dépendance sur des entités. Pour réussir à construire l'entité avec les données reçues, on doit utiliser `MapRequestPayload`, qui va récupérer les données, les serializer, les valider, vérifier qu'elles font bien partie du groupe de champs qu'on peut modifier, et enfin, créer l'objet souhaité. 
+
+## Composer un objet avec des dépendances à d'autres objets
+Dans le cas de Film, on veut enregistrer également les catégories associées, et la classification correspondante. Or, le sérializer n'est pas capable de faire cela, parce qu'il ne connait pas ces objets. Il va vouloir forcer la création de nouveaux objets, même si on lui passe l'id d'un objet déjà existant.
+
+On va donc devoir décomposer la requête JSON, et recomposer l'objet nous-même :
+
+```php
+#[Route(path: "/new", methods: ['POST'])]
+public function new(
+    Request $request,
+    EntityManagerInterface $em,
+    SerializerInterface $serializer,
+    UrlGeneratorInterface $urlGenerator,
+    ValidatorInterface $validator,
+    ClassificationRepository $classificationRepository
+) {
+    $data = json_decode($request->getContent(), true);
+
+    // On désérialise uniquement les champs scalaires du film.
+    // La classification NE doit PAS faire partie du groupe "api_film_index"
+    // côté propriété $classification, sinon le serializer recrée un objet détaché.
+    $film = $serializer->deserialize($request->getContent(), Film::class, 'json', [
+        "groups" => "api_film_index",
+    ]);
+
+    // On récupère la classification existante en base plutôt que de laisser
+    // le serializer en recréer une instance détachée avec seulement l'id renseigné.
+    if (!empty($data['classification']['id'])) {
+      $classification = $classificationRepository->find($data['classification']['id']);
+      if ($classification) {
+        $film->setClassification($classification);
+      }
+    }
+
+    // On désérialise uniquement les champs scalaires des catégories
+    foreach ($data['categories'] as $categoryData) {
+      $category = $categoryRepository->find($categoryData['id']);
+      if ($category) {
+        $film->addCategory($category);
+      }
+    }
+
+    $errors = $validator->validate($film);
+
+    if ($errors->count()) {
+      $messages = [];
+      foreach ($errors as $error) {
+        $messages[] = $error->getMessage();
+      }
+      return $this->json($messages, Response::HTTP_UNPROCESSABLE_ENTITY);
+    }
+
+    $em->persist($film);
+    $em->flush();
+
+    $url = $urlGenerator->generate('app_films_show', ['id' => $film->getId()], UrlGeneratorInterface::ABSOLUTE_URL);
+    return $this->json($film, Response::HTTP_CREATED, ['Location' => $url]);
+}
+```
 
 ## Activité
 Aller à [l'activité 7](<16 Activité 7.md>).
