@@ -160,7 +160,7 @@ $film = new Film;
 $film->setTitre('Nouveau film');
 //  ...
 
-$em->persist();
+$em->persist($film);
 $em->flush();
 ```
 

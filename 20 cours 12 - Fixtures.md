@@ -74,7 +74,7 @@ Et maintenant, il ne nous reste plus qu'à exécuter ce code, pour remplir la ba
 # vide toute la base avant de la reremplir
 symfony console doctrine:fixtures:load 
 # ajoute les données à la base, sans la vider.
-symfony console doctrine:fixtures:load -- append 
+symfony console doctrine:fixtures:load --append 
 ```
 
 ## Fixtures avec relation entre entités
@@ -171,7 +171,7 @@ On va commencer par lui dire de quelle autre fixture notre film dépend, en ajou
 ```php
 public function getDependencies()
   {
-      return [Classification::class];
+      return [ClassificationFixtures::class];
   }
 ```
 Ensuite, on va ajouter le champ classification, et on va aller chercher la référence à celle qu'on veut, de manière aléatoire, grâce à faker :
@@ -212,6 +212,8 @@ class FilmFixtures extends Fixture implements DependentFixtureInterface
             ->setDateSortie($this->faker->dateTime())
             ->setUrlAffiche($this->faker->url())
             ->setClassification($this->getReference($this->faker->randomElement(ClassificationFixtures::getClassificationsArray())));
+
+            $manager->persist($film);
         }
 
         $manager->flush();
@@ -242,4 +244,4 @@ $film->setTitre($this->faker->unique()->sentence());
 
 
 ## Activité
-Aller à [l'activité 9](<20 Activité 9.md>).
+Aller à [l'activité 9](<21 Activité 9.md>).

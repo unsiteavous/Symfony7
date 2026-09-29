@@ -25,7 +25,8 @@
     "activityBarTop.inactiveForeground": "#15202b99",
     "commandCenter.foreground": "#e7e7e7",
     "statusBar.debuggingBackground": "#007fff",
-    "statusBar.debuggingForeground": "#e7e7e7"
+    "statusBar.debuggingForeground": "#e7e7e7",
+    "statusBar.inactiveBackground": "#007fff"
   },
   "peacock.color": "#007fff"
 }

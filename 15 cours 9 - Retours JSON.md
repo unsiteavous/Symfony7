@@ -201,6 +201,7 @@ public function new(
     UrlGeneratorInterface $urlGenerator,
     ValidatorInterface $validator,
     ClassificationRepository $classificationRepository
+    CategoryRepository $categoryRepository
 ) {
     $data = json_decode($request->getContent(), true);
 

@@ -46,15 +46,15 @@ Il y aura potentiellement plusieurs commandes à faire par la suite, en fonction
 ## Gérer les routes
 Il y a plusieurs manières de gérer les routes. Il ne faut pas oublier que symfony travaille avec des fichiers yaml, qui gèrent pas mal de configurations. Je trouve personnellement que ce n'est pas très pratique d'avoir les autorisations des routes qui sont ailleurs que près de mes routes, ça m'oblige à ouvrir plusieurs fichiers pour savoir qui a le droit d'aller sur telle ou telle route. 
 
-À la place, je préfère utiliser `isGranted`.
+À la place, je préfère utiliser `IsGranted`.
  
-[📜 Documentation Symfony isGranted (vieux)](https://symfony.com/bundles/SensioFrameworkExtraBundle/current/annotations/security.html#isgranted) 
+[📜 Documentation Symfony IsGranted (vieux)](https://symfony.com/bundles/SensioFrameworkExtraBundle/current/annotations/security.html#isgranted) 
 [📜 Documentation Symfony (nouveau)](https://symfony.com/doc/current/security.html#security-securing-controller-attributes)  
 [📜 Documentation SymfonyCast](https://symfonycasts.com/screencast/symfony-security/is-auth)
 
 
 Cette annotation permettra de savoir quel rôle peut accéder à quelle partie de mon application.
-`isGranted` accepte comme argument les rôles, mais pas que. Voici une liste des arguments possibles qu'on peut avoir dans cette annotation :
+`IsGranted` accepte comme argument les rôles, mais pas que. Voici une liste des arguments possibles qu'on peut avoir dans cette annotation :
 
 * ROLE_USER, ROLE_ADMIN, ROLE_SUPER_ADMIN, ROLE_PERSONNALISÉ...  
 * IS_AUTHENTICATED_FULLY  
@@ -100,13 +100,13 @@ security:
 
 ### Dans un controller
 
-voici tout ce qu'on peut dire à `isGranted` :
+voici tout ce qu'on peut dire à `IsGranted` :
 ```php
-#[isGranted('ROLE_ADMIN', statusCode: 423, message: "Vous n'avez pas les droits pour accéder à cette page")]
+#[IsGranted('ROLE_ADMIN', statusCode: 403, message: "Vous n'avez pas les droits pour accéder à cette page")]
 ```
 
 ### Et dans twig ?
-L'avantage de cette annotation `isGranted` sur les autres méthodes qui existent dans symfony pour vérifier les rôles, c'est qu'elle ressemble beaucoup à ce qu'on fait en twig pour la même chose : 
+L'avantage de cette annotation `IsGranted` sur les autres méthodes qui existent dans symfony pour vérifier les rôles, c'est qu'elle ressemble beaucoup à ce qu'on fait en twig pour la même chose : 
 
 ```twig
 {% if is_granted('ROLE_ADMIN') %}

@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>test JWT</title>
+</head>
+
+<body>
+
+    <h1>1. Connexion</h1>
+    <form id="form-login">
+        <input type="email" name="username" placeholder="Email" required>
+        <input type="password" name="password" placeholder="Mot de passe" required>
+        <button type="submit">Se connecter</button>
+    </form>
+
+    <p id="etat-connexion"></p>
+    <button id="btn-logout" hidden>Se déconnecter</button>
+
+    <h1>2. Requête protégée</h1>
+    <p>Appelle <code>GET /api/me</code> en envoyant le token dans le header <code>Authorization</code>.</p>
+    <button id="btn-me">Qui suis-je ?</button>
+
+    <pre id="resultat"></pre>
+
+    <script>
+        // Clé sous laquelle le token est rangé dans le navigateur.
+        // localStorage est simple pour une démo, mais lisible par n'importe quel script
+        // de la page (risque XSS) : en production, on préfère souvent un cookie HttpOnly.
+        const TOKEN_KEY = 'jwt_token'
+
+        const formLogin = document.getElementById('form-login')
+        const etatConnexion = document.getElementById('etat-connexion')
+        const btnLogout = document.getElementById('btn-logout')
+        const btnMe = document.getElementById('btn-me')
+        const resultat = document.getElementById('resultat')
+
+        // Décode la partie "payload" du JWT (2e segment, en base64url).
+        // Aucune vérification de signature ici : cela montre simplement que le contenu
+        // du token est lisible par tous. Seul le back peut vérifier qu'il est authentique.
+        function lireToken(token) {
+            const payload = token.split('.')[1].replace(/-/g, '+').replace(/_/g, '/')
+            return JSON.parse(atob(payload))
+        }
+
+        // Met à jour l'affichage selon la présence (et la validité temporelle) du token
+        function afficherEtat() {
+            const token = localStorage.getItem(TOKEN_KEY)
+
+            if (!token) {
+                etatConnexion.textContent = 'Non connecté.'
+                btnLogout.hidden = true
+                return
+            }
+
+            const { username, exp } = lireToken(token)
+            const expiration = new Date(exp * 1000).toLocaleTimeString()
+            etatConnexion.textContent = `Connecté en tant que ${username} (token valable jusqu'à ${expiration}).`
+            btnLogout.hidden = false
+        }
+
+        // Envoie email + mot de passe à /api/login et stocke le token reçu.
+        // Les clés "username" et "password" sont celles attendues par json_login.
+        async function seConnecter(event) {
+            event.preventDefault()
+            resultat.textContent = ''
+
+            const formData = new FormData(formLogin)
+
+            const response = await fetch('/api/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    username: formData.get('username'),
+                    password: formData.get('password'),
+                }),
+            })
+
+            const data = await response.json()
+
+            if (!response.ok) {
+                // En cas d'échec, Lexik renvoie { code: 401, message: "Invalid credentials." }
+                resultat.textContent = data.message ?? 'Connexion impossible.'
+                return
+            }
+
+            localStorage.setItem(TOKEN_KEY, data.token)
+            formLogin.reset()
+            afficherEtat()
+        }
+
+        // Côté front, se déconnecter revient à oublier le token.
+        // Le token reste techniquement valide côté back jusqu'à son expiration (token_ttl).
+        function seDeconnecter() {
+            localStorage.removeItem(TOKEN_KEY)
+            resultat.textContent = ''
+            afficherEtat()
+        }
+
+        // Exemple de requête vers une route protégée : le token est transmis
+        // dans le header "Authorization: Bearer <token>" à chaque appel.
+        async function appelerRouteProtegee() {
+            const token = localStorage.getItem(TOKEN_KEY)
+
+            const response = await fetch('/api/me', {
+                method: 'GET',
+                headers: {
+                    'Accept': 'application/json',
+                    // Sans token, on n'envoie pas le header : le back répondra 401,
+                    // ce qui permet d'observer le comportement du firewall.
+                    ...(token && { 'Authorization': `Bearer ${token}` }),
+                },
+            })
+
+            // 401 : token absent, invalide ou expiré → il faut se reconnecter
+            if (response.status === 401) {
+                const data = await response.json()
+                resultat.textContent = `401 - ${data.message}`
+                localStorage.removeItem(TOKEN_KEY)
+                afficherEtat()
+                return
+            }
+
+            // 404 tant que la route /api/me n'a pas été créée côté Symfony
+            if (!response.ok) {
+                resultat.textContent = `Erreur ${response.status}`
+                return
+            }
+
+            const data = await response.json()
+            resultat.textContent = JSON.stringify(data, null, 2)
+        }
+
+        formLogin.addEventListener('submit', seConnecter)
+        btnLogout.addEventListener('click', seDeconnecter)
+        btnMe.addEventListener('click', appelerRouteProtegee)
+        afficherEtat()
+    </script>
+</body>
+
+</html>

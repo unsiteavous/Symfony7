@@ -9,3 +9,8 @@
 
 controllers:
     resource: routing.controllers
+
+# Route interceptée par le firewall "login" (json_login) : aucun contrôleur n'est nécessaire.
+api_login:
+    path: /api/login
+    methods: [POST]

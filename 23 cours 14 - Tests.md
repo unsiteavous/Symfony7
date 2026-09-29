@@ -64,9 +64,9 @@ Les deux sont indispensables.
 
 Pour lancer les tests, on fait ensuite la commande 
 ```bash
-symfony phpunit
+symfony phpunit --env=test
 # ou
-php bin/phpunit
+php bin/phpunit --env=test
 ```
 
 Il est aussi possible d'installer une extension, [PHPUnit Test Explorer](https://marketplace.visualstudio.com/items/?itemName=recca0120.vscode-phpunit), qui permet de lancer les tests un par un, en cliquant à côté. très pratique pour avancer pas à pas.

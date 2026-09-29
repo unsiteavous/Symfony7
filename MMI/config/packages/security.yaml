@@ -16,6 +16,27 @@ security:
             # Ensure dev tools and static assets are always allowed
             pattern: ^/(_profiler|_wdt|assets|build)/
             security: false
+
+        # Connexion API : reçoit { username, password } en JSON et renvoie un JWT.
+        # Aucune session n'est créée (stateless), le front devra renvoyer le token à chaque requête.
+        login:
+            pattern: ^/api/login
+            stateless: true
+            provider: app_user_provider
+            json_login:
+                check_path: api_login
+                success_handler: lexik_jwt_authentication.handler.authentication_success
+                failure_handler: lexik_jwt_authentication.handler.authentication_failure
+
+        # Toutes les autres routes /api : l'utilisateur est reconnu via le header
+        # "Authorization: Bearer <token>". Ce firewall doit rester avant "main",
+        # car Symfony applique le premier firewall dont le pattern correspond.
+        api:
+            pattern: ^/api
+            stateless: true
+            provider: app_user_provider
+            jwt: ~
+
         main:
             lazy: true
             provider: app_user_provider
@@ -41,6 +62,12 @@ security:
 
     # Note: Only the *first* matching rule is applied
     access_control:
+        - { path: ^/api/login, roles: PUBLIC_ACCESS }
+        # Routes API restées publiques (utilisées par public/api.html)
+        - { path: ^/api/taille, roles: PUBLIC_ACCESS }
+        - { path: ^/api/chaussure, roles: PUBLIC_ACCESS }
+        # Tout le reste de l'API exige un token valide
+        - { path: ^/api, roles: IS_AUTHENTICATED_FULLY }
         - { path: ^/admin, roles: ROLE_ADMIN }
         - { path: ^/dashboard, roles: ROLE_USER }
 
