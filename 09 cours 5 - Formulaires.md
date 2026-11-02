@@ -139,7 +139,7 @@ Si a un moment on a fait un `find` (avec le filmRepository par exemple), l'entit
 à ce moment-là, si on veut le modifier, on a juste à appeler un setter, puis pour enregistrer les informations, à faire cette ligne :
 
 ```php
-$em = new EntityManagerInterface;
+$em = new EntityManagerInterface; // attention, ceci est un exemple, on n'instancie pas l'entityManager comme ça. on utilise l'injection de dépendance, dans le vrai code.
 $repo = new FilmRepository;
 
 $film = $repo->find('id');

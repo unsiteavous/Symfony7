@@ -200,7 +200,7 @@ public function new(
     SerializerInterface $serializer,
     UrlGeneratorInterface $urlGenerator,
     ValidatorInterface $validator,
-    ClassificationRepository $classificationRepository
+    ClassificationRepository $classificationRepository,
     CategoryRepository $categoryRepository
 ) {
     $data = json_decode($request->getContent(), true);

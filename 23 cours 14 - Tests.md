@@ -86,9 +86,10 @@ Commencez par créer une nouvelle base de données avec phpmyadmin, généraleme
 
 Une fois qu'on a fait ça, il faut la populer :
 ```bash
-symfony console doctrine:migrations:migrate
-symfony console doctrine:fixtures:load
+symfony console doctrine:migrations:migrate --env=test
+symfony console doctrine:fixtures:load --env=test
 ```
+L'indication `--env=test` permet de cibler l'environnement sur lequel on veut travailler. dev, test, prod, ... 
 
 Maintenant que la base est prête, il serait intéressant de savoir si nous arrivons bien à retrouver tous nos films par exemple.
 
